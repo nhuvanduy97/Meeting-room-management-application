@@ -1,22 +1,36 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Content from "../views/Content.vue";
+// import Content from "../views/Content.vue";
 import Calendar from "../components/Calendar.vue"
+import Container from "../views/index.vue"
+import Login from "../components/Login.vue"
+import Message from "../components/Message.vue"
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "content",
-    component: Content,
+    name: 'home',
+    component: Container,
     children: [
       {
         path: "/calendar",
         name: "calendar",
         component: Calendar
+      },
+      {
+        path: "/message",
+        name: "message",
+        component: Message
       }
     ]
+
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: Login
   }
 ];
 
