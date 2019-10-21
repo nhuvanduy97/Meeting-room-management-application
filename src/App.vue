@@ -1,47 +1,27 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
-      <v-list dense>
-        <template v-for="item in items">
-          <v-list-group
-            v-if="item.children"
-            :key="item.text"
-            v-model="item.model"
-            :prepend-icon="item.model ? item.icon : item['icon-alt']"
-            append-icon
-          >
-            <template v-slot:activator>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>{{ item.text }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </template>
-            <v-list-item v-for="(child, i) in item.children" :key="i">
-              <v-list-item-action v-if="child.icon">
-                <v-icon>{{ child.icon }}</v-icon>
-              </v-list-item-action>
+      <v-list dense rounded>
+        <v-subheader>SELECTED</v-subheader>
+        <v-list-item-group v-model="item" color="primary">
+          <v-list-item v-for="(item, i) in items" :key="i">
+            <v-list-item-icon>
+              <v-icon v-text="item.icon"></v-icon>
+            </v-list-item-icon>
+            <router-link to="/calendar">
               <v-list-item-content>
-                <v-list-item-title>{{ child.text }}</v-list-item-title>
+                <v-list-item-title v-text="item.text"></v-list-item-title>
               </v-list-item-content>
-            </v-list-item>
-          </v-list-group>
-          <v-list-item v-else :key="item.text">
-            <v-list-item-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>{{ item.text }}</v-list-item-title>
-            </v-list-item-content>
+            </router-link>
           </v-list-item>
-        </template>
+        </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
 
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="blue darken-3" dark>
       <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <span class="hidden-sm-and-down">Google Contacts</span>
+        <span class="hidden-sm-and-down">Room Reservation</span>
       </v-toolbar-title>
       <v-text-field
         flat
@@ -64,15 +44,15 @@
         </v-avatar>
       </v-btn>
     </v-app-bar>
+
     <v-content>
-      <v-container class="fill-height" fluid>
-        <h1>asdada</h1>
-      </v-container>
+      <Content></Content>
     </v-content>
+
     <v-btn bottom color="pink" dark fab fixed right @click="dialog = !dialog">
       <v-icon>mdi-plus</v-icon>
     </v-btn>
-    <v-dialog v-model="dialog" width="800px">
+    <v-dialog v-model="dialog" persistent width="800px">
       <v-card>
         <v-card-title class="grey darken-2">Create contact</v-card-title>
         <v-container>
@@ -114,7 +94,11 @@
 </template>
 
 <script>
+import Content from "../src/views/Content";
 export default {
+  components: {
+    Content
+  },
   props: {
     source: String
   },
@@ -122,30 +106,10 @@ export default {
     dialog: false,
     drawer: null,
     items: [
-      { icon: "contacts", text: "Contacts" },
-      { icon: "history", text: "Frequently contacted" },
-      { icon: "content_copy", text: "Duplicates" },
-      {
-        icon: "keyboard_arrow_up",
-        "icon-alt": "keyboard_arrow_down",
-        text: "Labels",
-        model: true,
-        children: [{ icon: "add", text: "Create label" }]
-      },
-      {
-        icon: "keyboard_arrow_up",
-        "icon-alt": "keyboard_arrow_down",
-        text: "More",
-        model: false,
-        children: [
-          { text: "Import" },
-          { text: "Export" },
-          { text: "Print" },
-          { text: "Undo changes" },
-          { text: "Other contacts" }
-        ]
-      },
-      { icon: "settings", text: "Settings" },
+      { icon: "home", text: "Home" },
+      { icon: "calendar_today", text: "Calendar" },
+      { icon: "message", text: "Message" },
+      { icon: "work", text: "Work" },
       { icon: "chat_bubble", text: "Send feedback" },
       { icon: "help", text: "Help" },
       { icon: "phonelink", text: "App downloads" },
@@ -154,3 +118,8 @@ export default {
   })
 };
 </script>
+<style lang="scss">
+.v-list-item:hover {
+  background-color: #f6f6f6;
+}
+</style>
