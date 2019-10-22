@@ -10,22 +10,50 @@
           <span>D2</span>
         </div>
       </div>
-      <v-list dense rounded>
-        <v-subheader>SELECTED</v-subheader>
-        <v-list-item-group color="primary" v-model="item">
-          <div v-for="(item, i) in items" :key="i">
+      <v-list dense shaped>
+        <template v-for="item in items">
+          <v-list-group
+            v-if="item.children"
+            :key="item.text"
+            v-model="item.model"
+            :prepend-icon="item.model ? item.icon : item['icon-alt']"
+            append-icon
+           
+            
+          >
+            <template v-slot:activator>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.text }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+            <div v-for="(child, i) in item.children" :key="i">
+              <router-link :to="child.href">
+                <v-list-item>
+                  <v-list-item-action v-if="child.icon">
+                    <v-icon>{{ child.icon }}</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ child.text }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </router-link>
+            </div>
+          </v-list-group>
+          <div v-else :key="item.text">
             <router-link :to="item.href">
               <v-list-item>
-                <v-list-item-icon>
-                  <v-icon v-text="item.icon"></v-icon>
-                </v-list-item-icon>
+                <v-list-item-action>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-action>
                 <v-list-item-content>
-                  <v-list-item-title v-text="item.text"></v-list-item-title>
+                  <v-list-item-title>{{ item.text }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </router-link>
           </div>
-        </v-list-item-group>
+        </template>
       </v-list>
     </v-navigation-drawer>
 
@@ -57,9 +85,9 @@
     </v-app-bar>
 
     <v-content>
-     <div class="content">
+      <div class="content">
         <router-view></router-view>
-     </div>
+      </div>
     </v-content>
 
     <v-btn bottom color="pink" dark fab fixed right @click="dialog = !dialog">
@@ -74,7 +102,7 @@
               <v-row align="center">
                 <!-- <v-avatar size="40px" class="mr-4">
                   <img src="//ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png" alt />
-                </v-avatar> -->
+                </v-avatar>-->
                 <v-text-field prepend-icon="title" placeholder="Title"></v-text-field>
               </v-row>
             </v-col>
@@ -114,13 +142,36 @@ export default {
   data: () => ({
     dialog: false,
     drawer: null,
+    // items: [
+    //   { icon: "home", text: "Home", href: "/home" },
+    //   { icon: "calendar_today", text: "Calendar", href: "/calendar" },
+    //   { icon: "message", text: "Message", href: "/message" },
+    //   { icon: "work", text: "Metting", href: "/home" },
+    //   { icon: "view_array", text: "Report", href: "/report" },
+
+    //   { icon: "help", text: "Help", href: "/home" },
+    //   { icon: "meeting_room", text: "Room Manager", href: "/room-manager" },
+    //   { icon: "settings_applications", text: "Setting", href: "/home" }
+    // ]
     items: [
       { icon: "home", text: "Home", href: "/home" },
       { icon: "calendar_today", text: "Calendar", href: "/calendar" },
       { icon: "message", text: "Message", href: "/message" },
       { icon: "work", text: "Metting", href: "/home" },
       { icon: "view_array", text: "Report", href: "/report" },
-
+      {
+        icon: "keyboard_arrow_up",
+        "icon-alt": "keyboard_arrow_down",
+        text: "Metting",
+        model: false,
+        children: [
+          { text: "Import", href: "/home" },
+          { text: "Export", href: "/home" },
+          { text: "Print", href: "/home" },
+          { text: "Undo changes", href: "/room-manager" },
+          { text: "Other contacts", href: "/room-manager" }
+        ]
+      },
       { icon: "help", text: "Help", href: "/home" },
       { icon: "meeting_room", text: "Room Manager", href: "/room-manager" },
       { icon: "settings_applications", text: "Setting", href: "/home" }
@@ -133,6 +184,9 @@ export default {
   padding-left: 10px;
 }
 .v-list-item:hover {
+  background-color: #f6f6f6;
+}
+.v-list-item__content:hover {
   background-color: #f6f6f6;
 }
 a:hover {
