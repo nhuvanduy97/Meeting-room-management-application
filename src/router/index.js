@@ -5,6 +5,9 @@ import Calendar from "../components/Calendar.vue"
 import Container from "../views/index.vue"
 import Login from "../components/Login.vue"
 import Message from "../components/Message.vue"
+import Home from "../components/Home.vue"
+import RoomManager from "../components/roomManager/RoomManager.vue"
+import Report from "../components/director/Report.vue"
 
 Vue.use(VueRouter);
 
@@ -23,6 +26,21 @@ const routes = [
         path: "/message",
         name: "message",
         component: Message
+      },
+      {
+        path: "/home",
+        name: "home",
+        component: Home
+      },
+      {
+        path: "/room-manager",
+        name: "room-manager",
+        component: RoomManager
+      },
+      {
+        path: "/report",
+        name: "report",
+        component: Report
       }
     ]
 

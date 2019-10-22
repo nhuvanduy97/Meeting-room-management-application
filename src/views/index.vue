@@ -1,10 +1,14 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
-      <div>
+      <div class="info-user">
         <v-avatar>
           <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
         </v-avatar>
+        <div class="user">
+          <span>Nhu Van Duy</span>
+          <span>D2</span>
+        </div>
       </div>
       <v-list dense rounded>
         <v-subheader>SELECTED</v-subheader>
@@ -40,10 +44,10 @@
       ></v-text-field>
       <v-spacer></v-spacer>
       <v-btn icon>
-        <v-icon>mdi-apps</v-icon>
+        <v-icon>group</v-icon>
       </v-btn>
       <v-btn icon>
-        <v-icon>mdi-bell</v-icon>
+        <v-icon>notifications</v-icon>
       </v-btn>
       <!-- <v-btn icon large>
         <v-avatar size="32px" item>
@@ -53,7 +57,9 @@
     </v-app-bar>
 
     <v-content>
-      <router-view></router-view>
+     <div class="content">
+        <router-view></router-view>
+     </div>
     </v-content>
 
     <v-btn bottom color="pink" dark fab fixed right @click="dialog = !dialog">
@@ -61,15 +67,15 @@
     </v-btn>
     <v-dialog v-model="dialog" persistent width="800px">
       <v-card>
-        <v-card-title class="grey darken-2">Create contact</v-card-title>
+        <v-card-title class="grey darken-2">Book Room</v-card-title>
         <v-container>
           <v-row>
             <v-col class="align-center justify-space-between" cols="12">
               <v-row align="center">
-                <v-avatar size="40px" class="mr-4">
+                <!-- <v-avatar size="40px" class="mr-4">
                   <img src="//ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png" alt />
-                </v-avatar>
-                <v-text-field placeholder="Name"></v-text-field>
+                </v-avatar> -->
+                <v-text-field prepend-icon="title" placeholder="Title"></v-text-field>
               </v-row>
             </v-col>
             <v-col cols="6">
@@ -112,20 +118,36 @@ export default {
       { icon: "home", text: "Home", href: "/home" },
       { icon: "calendar_today", text: "Calendar", href: "/calendar" },
       { icon: "message", text: "Message", href: "/message" },
-      { icon: "work", text: "Metting", href: "/work" },
+      { icon: "work", text: "Metting", href: "/home" },
+      { icon: "view_array", text: "Report", href: "/report" },
 
       { icon: "help", text: "Help", href: "/home" },
-      { icon: "meeting_room", text: "Room Manager", href: "/home" },
+      { icon: "meeting_room", text: "Room Manager", href: "/room-manager" },
       { icon: "settings_applications", text: "Setting", href: "/home" }
     ]
   })
 };
 </script>
 <style lang="scss">
+.content {
+  padding-left: 10px;
+}
 .v-list-item:hover {
   background-color: #f6f6f6;
 }
 a:hover {
   text-decoration: none !important;
+}
+.info-user {
+  display: flex;
+  margin-left: 20px;
+  margin-top: 10px;
+  // justify-content: center;
+  // text-align: center;
+}
+.user {
+  display: grid;
+  margin-left: 10px;
+  margin-top: 5px;
 }
 </style>
