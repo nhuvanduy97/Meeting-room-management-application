@@ -18,8 +18,6 @@
             v-model="item.model"
             :prepend-icon="item.model ? item.icon : item['icon-alt']"
             append-icon
-           
-            
           >
             <template v-slot:activator>
               <v-list-item>
@@ -100,23 +98,20 @@
           <v-row>
             <v-col class="align-center justify-space-between" cols="12">
               <v-row align="center">
-                <!-- <v-avatar size="40px" class="mr-4">
-                  <img src="//ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png" alt />
-                </v-avatar>-->
                 <v-text-field prepend-icon="title" placeholder="Title"></v-text-field>
               </v-row>
             </v-col>
             <v-col cols="6">
-              <v-text-field prepend-icon="business" placeholder="Company"></v-text-field>
+              <v-text-field prepend-icon="access_time" placeholder="Start"></v-text-field>
             </v-col>
             <v-col cols="6">
-              <v-text-field placeholder="Job title"></v-text-field>
+              <v-text-field placeholder="End"></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field prepend-icon="mail" placeholder="Email"></v-text-field>
+              <v-text-field prepend-icon="description" placeholder="Description"></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field type="tel" prepend-icon="phone" placeholder="(000) 000 - 0000"></v-text-field>
+              <v-select prepend-icon="room" :items="rooms" label="Room" solo></v-select>
             </v-col>
             <v-col cols="12">
               <v-text-field prepend-icon="notes" placeholder="Notes"></v-text-field>
@@ -124,10 +119,9 @@
           </v-row>
         </v-container>
         <v-card-actions>
-          <v-btn text color="primary">More</v-btn>
           <v-spacer></v-spacer>
-          <v-btn text color="primary" @click="dialog = false">Cancel</v-btn>
-          <v-btn text @click="dialog = false">Save</v-btn>
+          <v-btn text @click="dialog = false">Cancel</v-btn>
+          <v-btn text color="primary" @click="dialog = false">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -153,11 +147,11 @@ export default {
     //   { icon: "meeting_room", text: "Room Manager", href: "/room-manager" },
     //   { icon: "settings_applications", text: "Setting", href: "/home" }
     // ]
+    rooms: ["Foo", "Bar", "Fizz", "Buzz"],
     items: [
       { icon: "home", text: "Home", href: "/home" },
       { icon: "calendar_today", text: "Calendar", href: "/calendar" },
       { icon: "message", text: "Message", href: "/message" },
-      { icon: "work", text: "Metting", href: "/home" },
       { icon: "view_array", text: "Report", href: "/report" },
       {
         icon: "keyboard_arrow_up",
@@ -165,14 +159,10 @@ export default {
         text: "Metting",
         model: false,
         children: [
-          { text: "Import", href: "/home" },
-          { text: "Export", href: "/home" },
-          { text: "Print", href: "/home" },
-          { text: "Undo changes", href: "/room-manager" },
-          { text: "Other contacts", href: "/room-manager" }
+          { icon: "work", text: "Your Metting", href: "/your-metting" },
+          { icon: "credit_card", text: "My Metting", href: "/home" }
         ]
       },
-      { icon: "help", text: "Help", href: "/home" },
       { icon: "meeting_room", text: "Room Manager", href: "/room-manager" },
       { icon: "settings_applications", text: "Setting", href: "/home" }
     ]

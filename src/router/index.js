@@ -8,6 +8,7 @@ import Message from "../components/Message.vue"
 import Home from "../components/Home.vue"
 import RoomManager from "../components/roomManager/RoomManager.vue"
 import Report from "../components/director/Report.vue"
+import YourMetting from "../components/metting/YourMetting"
 
 Vue.use(VueRouter);
 
@@ -41,6 +42,11 @@ const routes = [
         path: "/report",
         name: "report",
         component: Report
+      },
+      {
+        path: "/your-metting",
+        name: "yourmetting",
+        component: YourMetting
       }
     ]
 

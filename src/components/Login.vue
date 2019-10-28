@@ -8,13 +8,13 @@
       <div class="login-input">
         <b-form-group>
           <div>
-            <b-form-input class="form-input" type="text" v-model="text" placeholder="Username"></b-form-input>
+            <b-form-input v-model="username" class="form-input" type="text" placeholder="Username"></b-form-input>
           </div>
           <div class="password">
-            <b-form-input class="form-input" type="password" v-model="text" placeholder="Password"></b-form-input>
+            <b-form-input v-model="password" class="form-input" type="password" placeholder="Password"></b-form-input>
           </div>
           <div class="btn-submit">
-            <b-button variant="primary">Login</b-button>
+            <b-button variant="primary" @click="login">Login</b-button>
           </div>
         </b-form-group>
       </div>
@@ -23,7 +23,31 @@
 </template>
 
 <script>
-export default {};
+import axios from "axios"
+export default {
+  data (){
+    return {
+      username: '',
+      password: '',
+    }
+  },
+  methods: {
+    login(){
+      console.log("username", this.username)
+      console.log("password", this.password)
+      axios({
+        method: 'post',
+        url: 'http://localhost:3000/api/login',
+        data: {
+          username: this.username,
+          password: this.password
+        }
+      }).then((res) =>{
+        console.log(res)
+      })
+    }
+  }
+};
 </script>
 
 <style lang="scss">
