@@ -9,6 +9,7 @@ import Home from "../components/Home.vue"
 import RoomManager from "../components/roomManager/RoomManager.vue"
 import Report from "../components/director/Report.vue"
 import YourMetting from "../components/metting/YourMetting"
+import InviteMetting from "../components/metting/InviteMetting"
 
 Vue.use(VueRouter);
 
@@ -47,6 +48,11 @@ const routes = [
         path: "/your-metting",
         name: "yourmetting",
         component: YourMetting
+      },
+      {
+        path: "/invite-metting",
+        name: "invitemetting",
+        component: InviteMetting
       }
     ]
 
@@ -54,10 +60,11 @@ const routes = [
   {
     path: "/login",
     name: "login",
-    component: Login
+    component: Login,
+    meta: { requiresAuth: true }
   }
 ];
-
+// console.log("cookies", this.$cookies.get("token"))
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,

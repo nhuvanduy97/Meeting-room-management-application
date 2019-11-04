@@ -11,7 +11,12 @@
             <b-form-input v-model="username" class="form-input" type="text" placeholder="Username"></b-form-input>
           </div>
           <div class="password">
-            <b-form-input v-model="password" class="form-input" type="password" placeholder="Password"></b-form-input>
+            <b-form-input
+              v-model="password"
+              class="form-input"
+              type="password"
+              placeholder="Password"
+            ></b-form-input>
           </div>
           <div class="btn-submit">
             <b-button variant="primary" @click="login">Login</b-button>
@@ -23,28 +28,44 @@
 </template>
 
 <script>
-import axios from "axios"
+import axios from "axios";
 export default {
-  data (){
+  data() {
     return {
-      username: '',
-      password: '',
-    }
+      username: "",
+      password: ""
+    };
   },
   methods: {
-    login(){
-      console.log("username", this.username)
-      console.log("password", this.password)
+    login() {
       axios({
-        method: 'post',
-        url: 'http://localhost:3000/api/login',
+        method: "post",
+        url: "http://localhost:3000/api/login",
         data: {
           username: this.username,
           password: this.password
         }
-      }).then((res) =>{
-        console.log(res)
       })
+        .then(res => {
+          if (!res.data.success) {
+            alert("wrong!");
+            (this.username = ""), (this.password = "");
+          }
+          if (res.data) {
+            this.$store.dispatch("storingUser", res.data.user);
+            let d = new Date();
+            d.setTime(d.getTime() + 1 * 24 * 60 * 60 * 1000);
+            let expires = "expires=" + d.toUTCString();
+            this.$cookies.set("token", res.data.token, expires);
+            this.$cookies.set("user", res.data.user);
+            this.$session.start();
+            this.$session.set("user", res.data.user);
+            this.$router.push({ path: "/" });
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
     }
   }
 };
@@ -52,18 +73,22 @@ export default {
 
 <style lang="scss">
 .my-login {
-  background-image: url("../assets/log_in_background.png");
+  background-image: url("../assets/background-login.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position-y: -125px;
   height: 100%;
   color: #605d5e;
   font-family: "Ubuntu", sans-serif;
+  display: flex;
+  justify-content: center;
   .login-form {
     position: absolute;
     width: 500px;
-    right: 140px;
-    top: 100px;
+    top: 120px;
+    background: black;
+    opacity: 0.5;
+    border-radius: 10px;
     .title-login {
       display: flex;
       justify-content: center;
@@ -89,7 +114,7 @@ export default {
     }
     .btn-primary {
       width: 100px;
-      border: none;  
+      border: none;
     }
   }
 }
