@@ -57,9 +57,9 @@ export default {
             d.setTime(d.getTime() + 1 * 24 * 60 * 60 * 1000);
             let expires = "expires=" + d.toUTCString();
             this.$cookies.set("token", res.data.token, expires);
-            this.$cookies.set("user", res.data.user);
-            this.$session.start();
-            this.$session.set("user", res.data.user);
+            this.$cookies.set("user", res.data.user, expires);
+
+
             this.$router.push({ path: "/" });
           }
         })

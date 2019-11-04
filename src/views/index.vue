@@ -145,9 +145,8 @@ export default {
     ...mapGetters(["getUserInfos"])
   },
   created() {
-    // console.log("session", this.$session.get("user"));
-    this.user = this.$session.get("user");
-    console.log("role", this.user.roleId);
+    this.user = this.$cookies.get("user");
+    // console.log("role", this.user.roleId);
 
     for (let i = 0; i < this.items.length; i++) {
       if (this.user.roleId.name === "admin") {

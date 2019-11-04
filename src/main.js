@@ -9,14 +9,14 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import VueCookies from "vue-cookies";
 import store from "./store/store.js";
-import VueSession from "vue-session"
+// import VueSession from "vue-session"
 
 
 
 Vue.use(ElementUI);
 Vue.use(BootstrapVue)
 Vue.use(VueCookies)
-Vue.use(VueSession)
+// Vue.use(VueSession)
 
 Vue.config.productionTip = false;
 // router.beforeEach((to, from, next) => {
