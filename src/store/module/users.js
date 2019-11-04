@@ -8,7 +8,6 @@ const getters = {
 
 const actions = {
     storingUser ({ commit }, user) {
-        console.log("action", user)
         commit("STORING_USER_INFO", user)
     }
 };

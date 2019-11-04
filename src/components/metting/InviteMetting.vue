@@ -1,5 +1,5 @@
 <template>
-  <div class="my-metting">
+  <div class="my-metting fadeInRight animated">
     <div>
         <h1>My Metting</h1>
     </div>

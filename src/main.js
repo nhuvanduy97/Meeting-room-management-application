@@ -12,7 +12,9 @@ import store from "./store/store.js";
 // import VueSession from "vue-session"
 
 
-
+import VueGoogleCharts from 'vue-google-charts'
+ 
+Vue.use(VueGoogleCharts)
 Vue.use(ElementUI);
 Vue.use(BootstrapVue)
 Vue.use(VueCookies)

@@ -2,9 +2,27 @@
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
       <div class="info-user">
-        <v-avatar>
-          <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
-        </v-avatar>
+        <el-popover placement="bottom" width="200" trigger="click">
+          <div>
+            <div style="cursor:pointer" class="change-password hover">
+              <i class="el-icon-user-solid"></i>
+              <span style="margin-left:5px">Change Password</span>
+            </div>
+            <div style="margin-top:10px;cursor:pointer" class="change-info hover">
+              <i class="el-icon-s-tools"></i>
+              <span style="margin-left:5px">Change Infomation</span>
+            </div>
+             <el-divider></el-divider>
+             <div @click="LogOut()" style="cursor:pointer" class="log-out hover">
+              <i class="el-icon-caret-right"></i>
+              <span style="margin-left:5px">Logout</span>
+            </div>
+          </div>
+          <v-avatar slot="reference">
+            <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+          </v-avatar>
+        </el-popover>
+
         <div class="user">
           <span>{{user.name}}</span>
           <span>{{user.department}}</span>
@@ -77,10 +95,10 @@
       ></v-text-field>
       <v-spacer></v-spacer>
       <v-btn icon>
-        <v-icon>group</v-icon>
+        <v-icon>notifications</v-icon>
       </v-btn>
       <v-btn icon>
-        <v-icon>notifications</v-icon>
+        <v-icon>groups</v-icon>
       </v-btn>
       <!-- <v-btn icon large>
         <v-avatar size="32px" item>
@@ -113,6 +131,24 @@
             </v-col>
             <v-col cols="6">
               <v-text-field placeholder="End"></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-dialog
+                ref="dialog"
+                v-model="modal"
+                :return-value.sync="date"
+                persistent
+                width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field v-model="date" label="Date" prepend-icon="event" readonly v-on="on"></v-text-field>
+                </template>
+                <v-date-picker v-model="date" scrollable>
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+                  <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+                </v-date-picker>
+              </v-dialog>
             </v-col>
             <v-col cols="12">
               <v-text-field prepend-icon="description" placeholder="Description"></v-text-field>
@@ -168,6 +204,8 @@ export default {
   },
   data: () => ({
     user: {},
+    date: new Date().toISOString().substr(0, 10),
+    modal: false,
     dialog: false,
     drawer: null,
     rooms: ["Foo", "Bar", "Fizz", "Buzz"],
@@ -212,6 +250,10 @@ export default {
     // },
     triggerClickSave() {
       this.dialog = false;
+    },
+    LogOut () {
+      this.$cookies.remove("user")
+      this.$router.push({ path: "/login" });
     }
   }
 };
@@ -240,5 +282,8 @@ a:hover {
   display: grid;
   margin-left: 10px;
   margin-top: 5px;
+}
+.hover:hover {
+  background: #E9EBEE;
 }
 </style>
