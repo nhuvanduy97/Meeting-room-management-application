@@ -12,8 +12,8 @@
               <i class="el-icon-s-tools"></i>
               <span style="margin-left:5px">Change Infomation</span>
             </div>
-             <el-divider></el-divider>
-             <div @click="LogOut()" style="cursor:pointer" class="log-out hover">
+            <el-divider></el-divider>
+            <div @click="LogOut()" style="cursor:pointer" class="log-out hover">
               <i class="el-icon-caret-right"></i>
               <span style="margin-left:5px">Logout</span>
             </div>
@@ -182,18 +182,17 @@ export default {
   },
   created() {
     this.user = this.$cookies.get("user");
-    // console.log("role", this.user.roleId);
-
     for (let i = 0; i < this.items.length; i++) {
       if (this.user.roleId.name === "admin") {
         this.items[i].isPermission = true;
       }
-      if (this.user.roleId.name === "director") {
-        if (
-          this.items[i].text === "Report" ||
-          this.items[i].text === "Your Metting" ||
-          this.items[i].text === "Calendar"
-        ) {
+      if (this.user.roleId.name === "leader") {
+        if (this.items[i].permission === "leader") {
+          this.items[i].isPermission = true;
+        }
+      }
+      if (this.user.roleId.name === "managerroom") {
+        if (this.items[i].permission === "managerroom") {
           this.items[i].isPermission = true;
         }
       }
@@ -214,24 +213,42 @@ export default {
         icon: "calendar_today",
         text: "Calendar",
         href: "/calendar",
+        permission: "leader",
         isPermission: false
       },
       {
         icon: "work",
         text: "Your Metting",
         href: "/your-metting",
+        permission: "leader",
         isPermission: false
       },
       {
         icon: "view_array",
         text: "Report",
         href: "/report",
+        permission: "leader",
         isPermission: false
       },
       {
         icon: "meeting_room",
         text: "Room Manager",
         href: "/room-manager",
+        permission: "managerroom",
+        isPermission: false
+      },
+        {
+        icon: "assignment_turned_in",
+        text: "Booking Room",
+        href: "/booking-room",
+        permission: "managerroom",
+        isPermission: false
+      },
+      {
+        icon: "confirmation_number",
+        text: "Booking Confirmation",
+        href: "/booking-confirm",
+        permission: "managerroom",
         isPermission: false
       }
     ],
@@ -243,16 +260,11 @@ export default {
     setting: [{ icon: "settings_applications", text: "Setting", href: "/home" }]
   }),
   methods: {
-    // isCheckRole(item) {
-    //   // if ( this.user.role){
-
-    //   // }
-    // },
     triggerClickSave() {
       this.dialog = false;
     },
-    LogOut () {
-      this.$cookies.remove("user")
+    LogOut() {
+      this.$cookies.remove("user");
       this.$router.push({ path: "/login" });
     }
   }
@@ -284,6 +296,6 @@ a:hover {
   margin-top: 5px;
 }
 .hover:hover {
-  background: #E9EBEE;
+  background: #e9ebee;
 }
 </style>

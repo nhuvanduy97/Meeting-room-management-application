@@ -5,16 +5,14 @@
     </div>
     <div class="table-room">
       <el-table
-        :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+        :data="rooms.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
         style="width: 100%"
       >
         <el-table-column type="index" label="#"></el-table-column>
-        <el-table-column label="ID" prop="id"></el-table-column>
         <el-table-column label="Name" prop="name"></el-table-column>
         <el-table-column label="Position" prop="position"></el-table-column>
-        <el-table-column label="Capacity" prop="capacity"></el-table-column>
-        <el-table-column label="Description" prop="description"></el-table-column>
-        <el-table-column label="Status" prop="status"></el-table-column>
+        <el-table-column label="Seat Number" prop="seatnumber"></el-table-column>
+        <el-table-column label="Description" prop="des"></el-table-column>
         <el-table-column align="right">
           <template slot="header">
             <el-input v-model="search" size="mini" placeholder="Type to search" />
@@ -31,77 +29,78 @@
       </el-table>
     </div>
 
-    <el-dialog :append-to-body="true" title="Shipping address" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="Promotion name" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+    <el-dialog :append-to-body="true" title="Add Room" :visible.sync="dialogFormVisible">
+      <el-form status-icon>
+        <el-form-item label="Name">
+          <el-input v-model="room.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="Zones" :label-width="formLabelWidth">
-          <el-select v-model="form.region" placeholder="Please select a zone">
-            <el-option label="Zone No.1" value="shanghai"></el-option>
-            <el-option label="Zone No.2" value="beijing"></el-option>
-          </el-select>
+        <el-form-item label="Position">
+          <el-input v-model="room.position" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Seat Number">
+          <el-input-number v-model="room.seatNumber" :min="50" :max="500"></el-input-number>
+        </el-form-item>
+        <el-form-item label="Description">
+          <el-input v-model="room.description" type="textarea"></el-input>
+        </el-form-item>
+        <el-form-item style="float:right">
+          <el-button type="primary" @click="toggleClick()">Save</el-button>
+          <el-button type="primary" @click="dialogFormVisible = false">Cancel</el-button>
         </el-form-item>
       </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
-      </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
+// import axios from "axios";
+import { getAllRoom, addRoom } from "@/api/room-api.js"
 export default {
   data() {
     return {
-      tableData: [
-        {
-          id: "R102",
-          name: "IOT",
-          position: "Floor 8 A2",
-          capacity: 120,
-          description: "This is room conference",
-          status: "Active"
-        },
-        {
-          id: "R103",
-          name: "ANDROID",
-          position: "Floor 6 A1",
-          capacity: 120,
-          description: "This is room conference",
-          status: "Empty"
-        },
-        {
-          id: "R106",
-          name: "AWS",
-          position: "Floor 9 A5",
-          capacity: 120,
-          description: "This is room conference",
-          status: "Active"
-        }
-      ],
+      rooms: [],
       search: "",
       dialogFormVisible: false,
-      form: {
+      formLabelWidth: "120px",
+      room: {
         name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: ""
+        position: "",
+        seatNumber: 0,
+        description: ""
       },
-      formLabelWidth: "120px"
+      token: ""
     };
   },
+ created() {
+    this.token = this.$cookies.get("token");
+    this.getInfoRoom();
+  },
+  updated() {
+    this.getInfoRoom();
+  },
   methods: {
+    getInfoRoom() {
+      return getAllRoom().then(res => {
+         this.rooms = [...res.data.rooms];
+      })
+    },
     handleEdit(index, row) {
       console.log(index, row);
     },
     handleDelete(index, row) {
       console.log(index, row);
+    },
+    toggleClick() {
+      let data = {
+        name: this.room.name,
+        seatnumber: this.room.seatNumber,
+        position: this.room.position,
+        des: this.room.description
+      }
+      addRoom(data).then(res => {
+        console.log(res)
+      })
+      this.dialogFormVisible = false;
     }
   }
 };
@@ -114,6 +113,15 @@ export default {
     margin-top: 20px;
   }
 }
+.el-dialog__wrapper {
+  .el-form-item__content {
+    margin-left: 110px !important;
+  }
+  .el-dialog__body {
+    height: 370px !important;
+  }
+}
+
 .animated {
   animation-duration: 0.2s;
 }
