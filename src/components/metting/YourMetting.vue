@@ -6,13 +6,13 @@
       <el-divider></el-divider>
     </div>
     <el-table :data="tableData" style="width: 100%;padding-left:10px">
-      <el-table-column label="Title" width="300"></el-table-column>
-      <el-table-column label="Room" width="180"></el-table-column>
-      <el-table-column label="Time" width="120"></el-table-column>
-      <el-table-column label="Date" width="120"></el-table-column>
-      <el-table-column label="Inviter" width="180"></el-table-column>
-      <el-table-column label="Note" width="300"></el-table-column>
-      <el-table-column style="display:flex; justify-content:center" label="Action">
+      <el-table-column label="Title"></el-table-column>
+      <el-table-column label="Room"></el-table-column>
+      <el-table-column label="Time"></el-table-column>
+      <el-table-column label="Date"></el-table-column>
+      <el-table-column label="Inviter"></el-table-column>
+      <el-table-column label="Note"></el-table-column>
+      <el-table-column width="400" label="Action">
         <el-button size="mini" type="success" icon="el-icon-check">Active</el-button>
         <el-button size="mini" icon="el-icon-remove">Inctive</el-button>
         <el-button size="mini" type="primary" icon="el-icon-edit">Edit</el-button>

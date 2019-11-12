@@ -186,7 +186,9 @@ export default {
     ...mapGetters(["getUserInfos"])
   },
   created() {
-    this.user = this.$cookies.get("user");
+    // console.log("user", this.getUserInfos)
+
+    this.user = this.getUserInfos;
     for (let i = 0; i < this.items.length; i++) {
       if (this.user.roleId.name === "admin") {
         this.items[i].isPermission = true;

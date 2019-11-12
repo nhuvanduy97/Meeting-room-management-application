@@ -7,7 +7,7 @@
     </div>
     <div class="body-reserve-booking">
       <el-row>
-        <el-col :span="17">
+        <el-col :span="17" >
           <el-form ref="form" :model="form" label-width="200px">
             <el-form-item label="Title">
               <span class="required">*</span>
@@ -94,7 +94,7 @@
             </el-form-item>
           </el-form>
         </el-col>
-        <el-col :span="4">
+        <el-col style="margin-left:40px" :span="4">
           <div style="height: 300px;">
             <el-steps direction="vertical" :active="3">
               <el-step title="Step 1"></el-step>
@@ -112,6 +112,8 @@
 
 <script>
 import { getAllRoom } from "@/api/room-api.js";
+import { getUserByTeamId } from "@/api/user.js";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -153,8 +155,23 @@ export default {
   },
   created() {
     this.getInfoRoom();
+    this.getUserByTeamId()
+  },
+  computed: {
+    ...mapGetters(["getUserInfos"])
   },
   methods: {
+    getUserByTeamId(){
+        console.log(this.getUserInfos.teamId._id)
+        let data = {
+            teamId: this.getUserInfos.teamId._id
+        }
+        // console.log("user", this.getUserInfos.teamId._id)
+        console.log("data", data)
+        getUserByTeamId(data).then(res => {
+            console.log(res)
+        })
+    },
     getInfoRoom() {
       return getAllRoom().then(res => {
         this.rooms = [...res.data.rooms];
@@ -190,7 +207,7 @@ export default {
   }
   .el-form-item__content {
     margin-left: 150px !important;
-    width: 50%;
+    // width: 50%;
   }
   .el-select {
     width: 220px !important;
