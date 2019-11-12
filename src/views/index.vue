@@ -31,7 +31,8 @@
       <template>
         <v-divider></v-divider>
       </template>
-      <template v-for="common in commons">
+      <v-list dense shaped>
+        <template v-for="common in commons">
         <div :key="common.text">
           <router-link :to="common.href">
             <v-list-item>
@@ -45,6 +46,7 @@
           </router-link>
         </div>
       </template>
+      </v-list>
       <v-list dense shaped>
         <template v-for="item in items">
           <div v-show="item.isPermission" :key="item.text">
@@ -241,7 +243,7 @@ export default {
         icon: "assignment_turned_in",
         text: "Booking Room",
         href: "/booking-room",
-        permission: "managerroom",
+        permission: "leader",
         isPermission: false
       },
       {

@@ -28,6 +28,17 @@
         </el-table-column>
       </el-table>
     </div>
+    <div class="page">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage4"
+        :page-sizes="[10, 20, 30, 50]"
+        :page-size="10"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="1"
+      ></el-pagination>
+    </div>
 
     <el-dialog :append-to-body="true" title="Add Room" :visible.sync="dialogFormVisible">
       <el-form status-icon>
@@ -54,7 +65,7 @@
 
 <script>
 // import axios from "axios";
-import { getAllRoom, addRoom } from "@/api/room-api.js"
+import { getAllRoom, addRoom } from "@/api/room-api.js";
 export default {
   data() {
     return {
@@ -71,7 +82,7 @@ export default {
       token: ""
     };
   },
- created() {
+  created() {
     this.token = this.$cookies.get("token");
     this.getInfoRoom();
   },
@@ -81,8 +92,8 @@ export default {
   methods: {
     getInfoRoom() {
       return getAllRoom().then(res => {
-         this.rooms = [...res.data.rooms];
-      })
+        this.rooms = [...res.data.rooms];
+      });
     },
     handleEdit(index, row) {
       console.log(index, row);
@@ -96,10 +107,10 @@ export default {
         seatnumber: this.room.seatNumber,
         position: this.room.position,
         des: this.room.description
-      }
+      };
       addRoom(data).then(res => {
-        console.log(res)
-      })
+        console.log(res);
+      });
       this.dialogFormVisible = false;
     }
   }
@@ -111,6 +122,9 @@ export default {
   padding-top: 20px;
   .table-room {
     margin-top: 20px;
+  }
+  .page {
+    margin-top: 50px;
   }
 }
 .el-dialog__wrapper {
