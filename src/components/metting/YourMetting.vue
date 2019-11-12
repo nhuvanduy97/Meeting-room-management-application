@@ -1,35 +1,33 @@
 <template>
   <div class="my-component fadeInRight animated">
-    <el-table
-      :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-      style="width: 100%"
-    >
-      <el-table-column type="index" label="#"></el-table-column>
-      <el-table-column label="Date" prop="date"></el-table-column>
-      <el-table-column label="Name" prop="name"></el-table-column>
-      <el-table-column label="Position" prop="address"></el-table-column>
-      <el-table-column align="right">
-        <template slot="header">
-          <el-input v-model="search" size="mini" placeholder="Type to search" />
-        </template>
-        <template>
-          <el-button
-            size="mini"
-            type="primary"
-            @click="dialogFormVisible = true"
-            icon="el-icon-user-solid"
-          >Members</el-button>
-          <el-button
-            size="mini"
-            type="primary"
-            @click="handleEdit(scope.$index, scope.row)"
-            icon="el-icon-edit"
-          >Edit</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">Cancel</el-button>
-        </template>
+    <div style="margin-left:20px;margin-top:20px" class="container">
+      <h4>Your Metting</h4>
+      <span>Please invite additional people after being accepted for the meeting room reservation</span>
+      <el-divider></el-divider>
+    </div>
+    <el-table :data="tableData" style="width: 100%;padding-left:10px">
+      <el-table-column label="Title" width="300"></el-table-column>
+      <el-table-column label="Room" width="180"></el-table-column>
+      <el-table-column label="Time" width="120"></el-table-column>
+      <el-table-column label="Date" width="120"></el-table-column>
+      <el-table-column label="Inviter" width="180"></el-table-column>
+      <el-table-column label="Note" width="300"></el-table-column>
+      <el-table-column style="display:flex; justify-content:center" label="Action">
+        <el-button size="mini" type="success" icon="el-icon-check">Active</el-button>
+        <el-button size="mini" icon="el-icon-remove">Inctive</el-button>
+        <el-button size="mini" type="primary" icon="el-icon-edit">Edit</el-button>
+        <el-button size="mini" type="danger" icon="el-icon-delete">Delete</el-button>
       </el-table-column>
     </el-table>
-    <el-dialog
+    <div style="margin-top:50px" class="page">
+      <el-pagination
+        :page-sizes="[10, 20, 30, 50]"
+        :page-size="10"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="1"
+      ></el-pagination>
+    </div>
+    <!-- <el-dialog
       :close-on-click-modal="false"
       :append-to-body="true"
       title="Invite Members"
@@ -63,7 +61,7 @@
         </el-col>
         <el-col :span="12">table members</el-col>
       </el-row>
-    </el-dialog>
+    </el-dialog>-->
   </div>
 </template>
 
@@ -160,5 +158,9 @@ export default {
 }
 .el-select {
   width: 193px !important;
+}
+.cell {
+  display: flex;
+  justify-content: center;
 }
 </style>

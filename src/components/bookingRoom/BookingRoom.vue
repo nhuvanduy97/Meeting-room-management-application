@@ -10,9 +10,11 @@
         <el-col :span="17">
           <el-form ref="form" :model="form" label-width="200px">
             <el-form-item label="Title">
+              <span class="required">*</span>
               <el-input v-model="form.name"></el-input>
             </el-form-item>
             <el-form-item label="Room">
+              <span class="required">*</span>
               <el-select v-model="room" placeholder="Please select room">
                 <div v-for="(room, index) in rooms" :key="index">
                   <el-option :label="room.name" :value="room.name"></el-option>
@@ -20,6 +22,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="Date">
+              <span class="required">*</span>
               <div class="block">
                 <el-date-picker
                   v-model="date"
@@ -31,6 +34,7 @@
             </el-form-item>
 
             <el-form-item label="Time">
+              <span class="required">*</span>
               <el-time-select
                 placeholder="Start time"
                 v-model="startTime"
@@ -51,6 +55,34 @@
                 minTime: startTime
                 }"
               ></el-time-select>
+            </el-form-item>
+
+            <el-form-item label="Inviter">
+              <el-select
+                v-model="value"
+                multiple
+                filterable
+                remote
+                reserve-keyword
+                placeholder="Please enter inviter"
+                :remote-method="remoteMethod"
+                :loading="loading"
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
+              <el-popover
+                placement="bottom"
+                width="200"
+                trigger="click"
+                content="This is list member of team"
+              >
+                <el-button slot="reference" style="margin-left:20px" size="small" type="primary" icon="el-icon-user">Member</el-button>
+              </el-popover>
             </el-form-item>
 
             <el-form-item label="Note">
@@ -93,8 +125,31 @@ export default {
         name: "",
         region: "",
         desc: ""
-      }
+      },
+      // ispermistion invited memember
+      options: [],
+      value: [],
+      list: [],
+      loading: false,
+      states: [
+        "Alabama",
+        "Alaska",
+        "Arizona",
+        "Arkansas",
+        "California",
+        "Colorado",
+        "Connecticut",
+        "Delaware",
+        "Florida",
+        "Georgia",
+        "Hawaii"
+      ]
     };
+  },
+  mounted() {
+    this.list = this.states.map(item => {
+      return { value: item, label: item };
+    });
   },
   created() {
     this.getInfoRoom();
@@ -107,6 +162,19 @@ export default {
     },
     onSubmit() {
       console.log("submit!");
+    },
+    remoteMethod(query) {
+      if (query !== "") {
+        this.loading = true;
+        setTimeout(() => {
+          this.loading = false;
+          this.options = this.list.filter(item => {
+            return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
+          });
+        }, 200);
+      } else {
+        this.options = [];
+      }
     }
   }
 };
@@ -129,6 +197,13 @@ export default {
   }
   .el-textarea__inner {
     height: 90px;
+  }
+  .required {
+    position: absolute;
+    z-index: 9999;
+    left: -100px;
+    top: -2px;
+    color: red;
   }
 }
 </style>

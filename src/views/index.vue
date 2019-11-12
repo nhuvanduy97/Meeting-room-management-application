@@ -102,6 +102,9 @@
       <v-btn icon>
         <v-icon>groups</v-icon>
       </v-btn>
+      <v-btn icon>
+        <v-icon>groups</v-icon>
+      </v-btn>
       <!-- <v-btn icon large>
         <v-avatar size="32px" item>
           <v-img src="https://cdn.vuetifyjs.com/images/logos/logo.svg" alt="Vuetify"></v-img>
@@ -244,13 +247,6 @@ export default {
         text: "Booking Room",
         href: "/booking-room",
         permission: "leader",
-        isPermission: false
-      },
-      {
-        icon: "confirmation_number",
-        text: "Booking Confirmation",
-        href: "/booking-confirm",
-        permission: "managerroom",
         isPermission: false
       }
     ],

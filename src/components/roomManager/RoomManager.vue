@@ -1,7 +1,7 @@
 <template>
   <div class="my-container fadeInRight animated">
     <div>
-      <el-button type="primary" @click="dialogFormVisible = true" icon="el-icon-edit">Add</el-button>
+      <el-button type="primary" size="small" @click="dialogFormVisible = true" icon="el-icon-edit">Add</el-button>
     </div>
     <div class="table-room">
       <el-table
@@ -30,9 +30,6 @@
     </div>
     <div class="page">
       <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page.sync="currentPage4"
         :page-sizes="[10, 20, 30, 50]"
         :page-size="10"
         layout="total, sizes, prev, pager, next, jumper"
@@ -120,12 +117,20 @@ export default {
 <style lang="scss">
 .my-container {
   padding-top: 20px;
+  margin-left: 10px;
   .table-room {
     margin-top: 20px;
   }
   .page {
     margin-top: 50px;
   }
+  .el-select {
+    width: 105px !important;
+}
+.el-pager {
+  padding-left: 5px;
+  padding-right: 5px;
+}
 }
 .el-dialog__wrapper {
   .el-form-item__content {

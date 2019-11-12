@@ -6,8 +6,9 @@ import Container from "../views/index.vue"
 import Login from "../components/Login.vue"
 import Message from "../components/message/Message.vue"
 import Home from "../components/Home.vue"
-import RoomManager from "../components/roomManager/RoomManager.vue"
-import BookingConfirm from "../components/roomManager/BookingConfirm.vue"
+// import RoomManager from "../components/roomManager/RoomManager.vue"
+// import BookingConfirm from "../components/roomManager/BookingConfirm.vue"
+import RoomManager from "../components/roomManager/"
 import Report from "../components/director/Report.vue"
 import YourMetting from "../components/metting/YourMetting"
 import InviteMetting from "../components/metting/InviteMetting"
@@ -40,11 +41,11 @@ const routes = [
         name: "room-manager",
         component: RoomManager
       },
-      {
-        path: "/booking-confirm",
-        name: "booking-confirm",
-        component: BookingConfirm
-      },
+      // {
+      //   path: "/booking-confirm",
+      //   name: "booking-confirm",
+      //   component: BookingConfirm
+      // },
       {
         path: "/report",
         name: "report",

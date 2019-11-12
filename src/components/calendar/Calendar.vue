@@ -99,6 +99,9 @@ export default {
 </script>
 
 <style lang="scss">
+.animated {
+  animation-duration: 0.2s;
+}
 .my-calendar {
   .my-event {
     overflow: hidden;
@@ -126,5 +129,6 @@ export default {
     margin-top: 10px;
     width: 100%;
   }
+  
 }
 </style>
