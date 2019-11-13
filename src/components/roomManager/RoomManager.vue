@@ -76,11 +76,11 @@ export default {
         seatNumber: 0,
         description: ""
       },
-      token: ""
+      // token: ""
     };
   },
   created() {
-    this.token = this.$cookies.get("token");
+    // this.token = this.$cookies.get("token");
     this.getInfoRoom();
   },
   updated() {

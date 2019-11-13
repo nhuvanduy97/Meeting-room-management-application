@@ -4,7 +4,7 @@ export function getUserByTeamId(teamId) {
 
     return request({
         url: "/api/get-user-by-teamid",
-        method: 'post',
+        method: 'get',
         params: {
             teamId: teamId
         }

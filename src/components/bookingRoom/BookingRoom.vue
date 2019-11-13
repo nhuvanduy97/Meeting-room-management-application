@@ -7,17 +7,17 @@
     </div>
     <div class="body-reserve-booking">
       <el-row>
-        <el-col :span="17" >
-          <el-form ref="form" :model="form" label-width="200px">
+        <el-col :span="17">
+          <el-form ref="form" label-width="200px">
             <el-form-item label="Title">
               <span class="required">*</span>
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="title"></el-input>
             </el-form-item>
             <el-form-item label="Room">
               <span class="required">*</span>
               <el-select v-model="room" placeholder="Please select room">
                 <div v-for="(room, index) in rooms" :key="index">
-                  <el-option :label="room.name" :value="room.name"></el-option>
+                  <el-option :value="room.name"></el-option>
                 </div>
               </el-select>
             </el-form-item>
@@ -45,7 +45,7 @@
                 }"
               ></el-time-select>
               <el-time-select
-                style="margin-left:20px"
+                class="media-time"
                 placeholder="End time"
                 v-model="endTime"
                 :picker-options="{
@@ -59,34 +59,24 @@
 
             <el-form-item label="Inviter">
               <el-select
-                v-model="value"
+                v-model="inviter"
                 multiple
                 filterable
-                remote
-                reserve-keyword
-                placeholder="Please enter inviter"
-                :remote-method="remoteMethod"
-                :loading="loading"
+                allow-create
+                default-first-option
+                placeholder="Choose member is inviter"
               >
                 <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  v-for="member in membersOfTeam"
+                  :key="member.id"
+                  :label="member.name"
+                  :value="member.id"
                 ></el-option>
               </el-select>
-              <el-popover
-                placement="bottom"
-                width="200"
-                trigger="click"
-                content="This is list member of team"
-              >
-                <el-button slot="reference" style="margin-left:20px" size="small" type="primary" icon="el-icon-user">Member</el-button>
-              </el-popover>
             </el-form-item>
 
             <el-form-item label="Note">
-              <el-input type="textarea" v-model="form.desc"></el-input>
+              <el-input type="textarea" v-model="note"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="onSubmit">Create</el-button>
@@ -119,58 +109,36 @@ export default {
     return {
       startTime: "",
       endTime: "",
-      value1: "",
       rooms: [],
       room: "",
       date: new Date(),
-      form: {
-        name: "",
-        region: "",
-        desc: ""
-      },
-      // ispermistion invited memember
-      options: [],
-      value: [],
-      list: [],
-      loading: false,
-      states: [
-        "Alabama",
-        "Alaska",
-        "Arizona",
-        "Arkansas",
-        "California",
-        "Colorado",
-        "Connecticut",
-        "Delaware",
-        "Florida",
-        "Georgia",
-        "Hawaii"
-      ]
+      title: "",
+      note: "",
+
+      membersOfTeam: [],
+      inviter: []
     };
-  },
-  mounted() {
-    this.list = this.states.map(item => {
-      return { value: item, label: item };
-    });
   },
   created() {
     this.getInfoRoom();
-    this.getUserByTeamId()
+    this.getUserByTeamId();
   },
   computed: {
     ...mapGetters(["getUserInfos"])
   },
   methods: {
-    getUserByTeamId(){
-        console.log(this.getUserInfos.teamId._id)
-        let data = {
-            teamId: this.getUserInfos.teamId._id
+    getUserByTeamId() {
+      getUserByTeamId(this.getUserInfos.teamId._id).then(res => {
+        for (let i = 0; i < res.data.members.length; i++) {
+          if (res.data.members[i]._id !== this.getUserInfos._id) {
+            let member = {
+              id: res.data.members[i]._id,
+              name: res.data.members[i].name
+            };
+            this.membersOfTeam.push(member);
+          }
         }
-        // console.log("user", this.getUserInfos.teamId._id)
-        console.log("data", data)
-        getUserByTeamId(data).then(res => {
-            console.log(res)
-        })
+      });
     },
     getInfoRoom() {
       return getAllRoom().then(res => {
@@ -178,20 +146,8 @@ export default {
       });
     },
     onSubmit() {
-      console.log("submit!");
-    },
-    remoteMethod(query) {
-      if (query !== "") {
-        this.loading = true;
-        setTimeout(() => {
-          this.loading = false;
-          this.options = this.list.filter(item => {
-            return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
-          });
-        }, 200);
-      } else {
-        this.options = [];
-      }
+      
+      console.log("title", this.title,"room", this.room, "date", this.date, "inviter", this.inviter, "startTime",this.startTime, "endTime", this.endTime,"note", this.note);
     }
   }
 };
@@ -221,6 +177,12 @@ export default {
     left: -100px;
     top: -2px;
     color: red;
+  }
+
+  @media screen and (min-width: 1000px) {
+    .media-time {
+      margin-left: 20px;
+    }
   }
 }
 </style>

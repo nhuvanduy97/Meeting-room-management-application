@@ -5,14 +5,15 @@
       <span>Please invite additional people after being accepted for the meeting room reservation</span>
       <el-divider></el-divider>
     </div>
-    <el-table :data="tableData" style="width: 100%;padding-left:10px">
-      <el-table-column label="Title"></el-table-column>
-      <el-table-column label="Room"></el-table-column>
-      <el-table-column label="Time"></el-table-column>
-      <el-table-column label="Date"></el-table-column>
+    <el-table :data="arrBooking" style="width: 100%;padding-left:10px">
+      <el-table-column label="Title" prop="title"></el-table-column>
+      <el-table-column label="Room" prop="room"></el-table-column>
+      <el-table-column label="Start Time" prop="startTime"></el-table-column>
+      <el-table-column label="End Time" prop="endTime"></el-table-column>
+      <el-table-column label="Date" prop="date"></el-table-column>
       <el-table-column label="Inviter"></el-table-column>
-      <el-table-column label="Note"></el-table-column>
-      <el-table-column width="400" label="Action">
+      <el-table-column label="Note" prop="note"></el-table-column>
+      <el-table-column width="300" label="Action">
         <el-button size="mini" type="success" icon="el-icon-check">Active</el-button>
         <el-button size="mini" icon="el-icon-remove">Inctive</el-button>
         <el-button size="mini" type="primary" icon="el-icon-edit">Edit</el-button>
@@ -27,87 +28,42 @@
         :total="1"
       ></el-pagination>
     </div>
-    <!-- <el-dialog
-      :close-on-click-modal="false"
-      :append-to-body="true"
-      title="Invite Members"
-      :visible.sync="dialogFormVisible"
-    >
-      <el-row>
-        <el-col span="12">
-          <el-form :model="form">
-            <el-form-item label="Team" :label-width="formLabelWidth">
-              <el-select v-model="form.region" placeholder="Team">
-                <el-option label="Zone No.1" value="shanghai"></el-option>
-                <el-option label="Zone No.2" value="beijing"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="Members" :label-width="formLabelWidth">
-              <el-autocomplete
-                class="inline-input"
-                v-model="state1"
-                :fetch-suggestions="querySearch"
-                placeholder="Member"
-                @select="handleSelect"
-              ></el-autocomplete>
-            </el-form-item>
-          </el-form>
-          <div>
-            <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">Cancel</el-button>
-              <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
-            </span>
-          </div>
-        </el-col>
-        <el-col :span="12">table members</el-col>
-      </el-row>
-    </el-dialog>-->
   </div>
 </template>
 
 <script>
+import { getAllBookingRoom } from "@/api/booking";
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-03",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles"
-        },
-        {
-          date: "2016-05-02",
-          name: "John",
-          address: "No. 189, Grove St, Los Angeles"
-        },
-        {
-          date: "2016-05-04",
-          name: "Morgan",
-          address: "No. 189, Grove St, Los Angeles"
-        },
-        {
-          date: "2016-05-01",
-          name: "Jessy",
-          address: "No. 189, Grove St, Los Angeles"
-        }
-      ],
-      state1: "",
-      search: "",
-      formLabelWidth: "120px",
-      form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: ""
-      },
-      dialogFormVisible: false
+      arrBooking: [],
+      arrStatusOfBooking: []
     };
   },
+  created() {
+    this.getAllBookingRoom();
+  },
   methods: {
+    getAllBookingRoom() {
+      return getAllBookingRoom()
+        .then(result => {
+          this.arrBooking = [...result.data.booking];
+          for (let i = 0; i < this.arrBooking.length; i++) {
+            let status = {
+              id: this.arrBooking[i]._id,
+              status: this.arrBooking[i].status
+            };
+            this.arrStatusOfBooking.push(status);
+          }
+          console.log("Arr", this.arrStatusOfBooking);
+          // console.log(result.data.booking)
+          console.log(this.arrBooking);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
     handleEdit(index, row) {
       console.log(index, row);
     },
