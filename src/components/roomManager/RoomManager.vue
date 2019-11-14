@@ -1,28 +1,33 @@
 <template>
   <div class="my-container fadeInRight animated">
     <div>
-      <el-button type="primary" size="small" @click="dialogFormVisible = true" icon="el-icon-edit">Add</el-button>
+      <el-button
+        type="primary"
+        size="small"
+        @click="dialogFormVisible = true"
+        icon="el-icon-edit"
+      >Add</el-button>
     </div>
     <div class="table-room">
-      <el-table
-        :data="rooms.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-        style="width: 100%"
-      >
+      <el-table :data="rooms" style="width: 100%">
         <el-table-column type="index" label="#"></el-table-column>
         <el-table-column label="Name" prop="name"></el-table-column>
         <el-table-column label="Position" prop="position"></el-table-column>
         <el-table-column label="Seat Number" prop="seatnumber"></el-table-column>
         <el-table-column label="Description" prop="des"></el-table-column>
-        <el-table-column align="right">
-          <template slot="header">
-            <el-input v-model="search" size="mini" placeholder="Type to search" />
-          </template>
-          <template>
-            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+        <el-table-column label="Actions" align="right">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              icon="el-icon-edit"
+              @click="handleEdit(scope.$index, scope.row)"
+            >Edit</el-button>
             <el-button
               size="mini"
               type="danger"
-              @click="handleDelete(scope.$index, scope.row)"
+              icon="el-icon-delete"
+              @click="handleDelete()"
             >Delete</el-button>
           </template>
         </el-table-column>
@@ -75,7 +80,7 @@ export default {
         position: "",
         seatNumber: 0,
         description: ""
-      },
+      }
       // token: ""
     };
   },
@@ -93,10 +98,10 @@ export default {
       });
     },
     handleEdit(index, row) {
-      console.log(index, row);
+      this.dialogFormVisible = true;
+      console.log(index, row)
     },
-    handleDelete(index, row) {
-      console.log(index, row);
+    handleDelete() {
     },
     toggleClick() {
       let data = {
@@ -126,11 +131,11 @@ export default {
   }
   .el-select {
     width: 105px !important;
-}
-.el-pager {
-  padding-left: 5px;
-  padding-right: 5px;
-}
+  }
+  .el-pager {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
 }
 .el-dialog__wrapper {
   .el-form-item__content {
@@ -139,6 +144,9 @@ export default {
   .el-dialog__body {
     height: 370px !important;
   }
+}
+.cell {
+  display: flex !important;
 }
 
 .animated {

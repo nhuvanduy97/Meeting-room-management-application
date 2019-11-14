@@ -14,6 +14,8 @@ import YourMetting from "../components/metting/YourMetting"
 import InviteMetting from "../components/metting/InviteMetting"
 import BookingRoom from "../components/bookingRoom/BookingRoom"
 
+// import Cookies from "vue-cookies"
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -82,5 +84,22 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 });
+
+
+// router.beforeEach((to, from, next) => {
+//   if(to.matched.some(record => record.meta.requiresAuth)){
+//     console.log("token", Cookies.get("token"))
+//     if(Cookies.get("token") === null){
+//       next({
+//         path: '/login',
+//         query: { redirect: to.fullPath }
+//       })
+//     } else {
+//       next()
+//     }
+//   } else {
+//     next()
+//   }
+// })
 
 export default router;

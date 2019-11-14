@@ -13,7 +13,7 @@
       <el-table-column label="Date" prop="date"></el-table-column>
       <el-table-column label="Inviter"></el-table-column>
       <el-table-column label="Note" prop="note"></el-table-column>
-      <el-table-column width="300" label="Action">
+      <el-table-column width="300" label="Actions">
         <el-button size="mini" type="success" icon="el-icon-check">Active</el-button>
         <el-button size="mini" icon="el-icon-remove">Inctive</el-button>
         <el-button size="mini" type="primary" icon="el-icon-edit">Edit</el-button>

@@ -22,7 +22,6 @@
             <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
           </v-avatar>
         </el-popover>
-
         <div class="user">
           <span>{{user.name}}</span>
           <span>{{user.department}}</span>
@@ -31,61 +30,62 @@
       <template>
         <v-divider></v-divider>
       </template>
+
       <v-list dense shaped>
-        <template v-for="common in commons">
-        <div :key="common.text">
-          <router-link :to="common.href">
-            <v-list-item>
-              <v-list-item-action>
-                <v-icon>{{ common.icon }}</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>{{ common.text }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </router-link>
-        </div>
-      </template>
-      </v-list>
-      <v-list dense shaped>
-        <template v-for="item in items">
-          <div v-show="item.isPermission" :key="item.text">
-            <router-link :to="item.href">
+        <v-subheader>MENU</v-subheader>
+        <v-list-item-group v-model="item" color="primary">
+          <template v-for="(item, i) in commons">
+            <router-link :to="item.href" :key="i">
               <v-list-item>
-                <v-list-item-action>
-                  <v-icon>{{ item.icon }}</v-icon>
-                </v-list-item-action>
+                <v-list-item-icon>
+                  <v-icon v-text="item.icon"></v-icon>
+                </v-list-item-icon>
                 <v-list-item-content>
-                  <v-list-item-title>{{ item.text }}</v-list-item-title>
+                  <v-list-item-title v-text="item.text"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </router-link>
-          </div>
-        </template>
-        <template>
-          <v-divider></v-divider>
-        </template>
-        <template v-for="st in setting">
-          <div :key="st.text">
-            <router-link :to="st.href">
-              <v-list-item>
-                <v-list-item-action>
-                  <v-icon>{{ st.icon }}</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title>{{ st.text }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </router-link>
-          </div>
-        </template>
+          </template>
+          <template v-for="item in items">
+            <div v-show="item.isPermission" :key="item.text">
+              <router-link :to="item.href">
+                <v-list-item>
+                  <v-list-item-action>
+                    <v-icon>{{ item.icon }}</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ item.text }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </router-link>
+            </div>
+          </template>
+          <template>
+            <v-divider></v-divider>
+          </template>
+          <v-subheader>SETTING</v-subheader>
+          <template v-for="st in setting">
+            <div :key="st.text">
+              <router-link :to="st.href">
+                <v-list-item>
+                  <v-list-item-action>
+                    <v-icon>{{ st.icon }}</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ st.text }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </router-link>
+            </div>
+          </template>
+        </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
 
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="blue darken-3" dark>
       <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <span class="hidden-sm-and-down">Room Reservation</span>
+        <span class="hidden-sm-and-down">ROOM RESERVATION</span>
       </v-toolbar-title>
       <v-text-field
         flat
@@ -96,20 +96,24 @@
         class="hidden-sm-and-down"
       ></v-text-field>
       <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>notifications</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>groups</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>groups</v-icon>
-      </v-btn>
-      <!-- <v-btn icon large>
+
+      <el-popover
+        placement="bottom"
+        title="Notifications"
+        width="200"
+        trigger="click"
+        content="this is content, this is content, this is content"
+      >
+        <v-btn slot="reference" large icon>
+          <v-icon>notifications</v-icon>
+        </v-btn>
+      </el-popover>
+
+      <v-btn disabled icon large>
         <v-avatar size="32px" item>
-          <v-img src="https://cdn.vuetifyjs.com/images/logos/logo.svg" alt="Vuetify"></v-img>
+          <v-img src="@/assets/d.png"></v-img>
         </v-avatar>
-      </v-btn>-->
+      </v-btn>
     </v-app-bar>
 
     <v-content>
@@ -209,6 +213,7 @@ export default {
     }
   },
   data: () => ({
+    item: 1,
     user: {},
     date: new Date().toISOString().substr(0, 10),
     modal: false,
@@ -244,7 +249,7 @@ export default {
         permission: "managerroom",
         isPermission: false
       },
-        {
+      {
         icon: "assignment_turned_in",
         text: "Booking Room",
         href: "/booking-room",

@@ -1,9 +1,9 @@
 <template>
   <div class="my-metting fadeInRight animated">
-    <div>
-        <h1>My Metting</h1>
+    <div style="margin-left:20px;margin-top:20px" class="container">
+      <h1>My Metting</h1>
+      <el-divider></el-divider>
     </div>
-     <el-divider></el-divider>
     <el-row :gutter="12">
       <el-col :span="8">
         <el-card shadow="hover">
