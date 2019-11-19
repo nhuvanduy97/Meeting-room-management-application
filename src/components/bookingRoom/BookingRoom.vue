@@ -8,36 +8,32 @@
     <div class="body-reserve-booking">
       <el-row>
         <el-col :span="17">
-          <el-form ref="form" label-width="200px">
-            <el-form-item label="Title">
-              <span class="required">*</span>
-              <el-input v-model="title"></el-input>
+          <el-form :model="booking" :rules="rules" ref="ruleForm" label-width="200px">
+            <el-form-item label="Title" prop="title">
+              <el-input v-model="booking.title"></el-input>
             </el-form-item>
-            <el-form-item label="Room">
-              <span class="required">*</span>
-              <el-select v-model="room" placeholder="Please select room">
+            <el-form-item label="Room" prop="room">
+              <el-select v-model="booking.room" placeholder="Please select room">
                 <div v-for="(room, index) in rooms" :key="index">
-                  <el-option :value="room.name"></el-option>
+                  <el-option :label="room.name" :value="room._id"></el-option>
                 </div>
               </el-select>
             </el-form-item>
-            <el-form-item label="Date">
-              <span class="required">*</span>
+            <el-form-item label="Date" prop="date">
               <div class="block">
                 <el-date-picker
-                  v-model="date"
+                  v-model="booking.date"
                   type="date"
-                  :default-value="date"
+                  :default-value="booking.date"
                   placeholder="Pick a date"
                 ></el-date-picker>
               </div>
             </el-form-item>
 
             <el-form-item label="Time">
-              <span class="required">*</span>
               <el-time-select
                 placeholder="Start time"
-                v-model="startTime"
+                v-model="booking.startTime"
                 :picker-options="{
                 start: '08:30',
                 step: '00:30',
@@ -47,19 +43,19 @@
               <el-time-select
                 class="media-time"
                 placeholder="End time"
-                v-model="endTime"
+                v-model="booking.endTime"
                 :picker-options="{
                 start: '08:30',
                 step: '00:30',
                 end: '18:30',
-                minTime: startTime
+                minTime: booking.startTime
                 }"
               ></el-time-select>
             </el-form-item>
 
             <el-form-item label="Inviter">
               <el-select
-                v-model="inviter"
+                v-model="booking.inviter"
                 multiple
                 filterable
                 allow-create
@@ -76,10 +72,10 @@
             </el-form-item>
 
             <el-form-item label="Note">
-              <el-input type="textarea" v-model="note"></el-input>
+              <el-input type="textarea" v-model="booking.note"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">Create</el-button>
+              <el-button type="primary" @click="handleClickCreate('ruleForm')">Create</el-button>
               <el-button>Cancel</el-button>
             </el-form-item>
           </el-form>
@@ -103,20 +99,43 @@
 <script>
 import { getAllRoom } from "@/api/room-api.js";
 import { getUserByTeamId } from "@/api/user.js";
+import { reserveRoom } from "@/api/booking.js";
+import moment from "moment";
 import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      startTime: "",
-      endTime: "",
-      rooms: [],
-      room: "",
-      date: new Date(),
-      title: "",
-      note: "",
-
+      booking: {
+        startTime: "",
+        date: new Date(),
+        endTime: "",
+        room: "",
+        title: "",
+        note: "",
+        inviter: [],
+        time: ""
+      },
+      rules: {
+        title: [
+          { required: true, message: "Please input Title", trigger: "blur" }
+        ],
+        room: [
+          { required: true, message: "Please select Room", trigger: "change" }
+        ],
+        startTime: [
+          { required: true, message: "Please select Room", trigger: "change" }
+        ],
+        date: [
+          {
+            type: "date",
+            required: true,
+            message: "Please pick a date",
+            trigger: "change"
+          }
+        ]
+      },
       membersOfTeam: [],
-      inviter: []
+      rooms: []
     };
   },
   created() {
@@ -143,11 +162,43 @@ export default {
     getInfoRoom() {
       return getAllRoom().then(res => {
         this.rooms = [...res.data.rooms];
+        console.log("room", this.rooms)
       });
     },
-    onSubmit() {
-      
-      console.log("title", this.title,"room", this.room, "date", this.date, "inviter", this.inviter, "startTime",this.startTime, "endTime", this.endTime,"note", this.note);
+    handleClickCreate(ruleForm) {
+      this.$refs[ruleForm].validate(valid => {
+        if (valid) {
+          let data = {
+            title: this.booking.title,
+            room: this.booking.room,
+            date: moment(this.booking.date).format("YYYY-MM-DD"),
+            startTime: this.booking.startTime,
+            endTime: this.booking.endTime,
+            note: this.booking.note,
+            inviters: this.booking.inviter
+          };
+          console.log("data", data)
+          reserveRoom(data).then(res => {
+            if (res.data.success) {
+              this.$notify({
+                title: "Success",
+                message: "Room reservation successful!",
+                type: "success"
+              });
+            }
+            else {
+              this.$notify.error({
+              title: 'Error',
+              message: 'Room reservation erro!'
+              });
+              this.$refs[ruleForm].resetFields();
+            }
+          });
+        } else {
+          alert("Erro!");
+          return false;
+        }
+      });
     }
   }
 };
@@ -185,4 +236,4 @@ export default {
     }
   }
 }
-</style>
+</style> 

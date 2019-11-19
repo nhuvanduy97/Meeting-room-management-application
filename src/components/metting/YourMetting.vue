@@ -7,17 +7,28 @@
     </div>
     <el-table :data="arrBooking" style="width: 100%;padding-left:10px">
       <el-table-column label="Title" prop="title"></el-table-column>
-      <el-table-column label="Room" prop="room"></el-table-column>
+      <el-table-column label="Room" prop="room.name"></el-table-column>
       <el-table-column label="Start Time" prop="startTime"></el-table-column>
       <el-table-column label="End Time" prop="endTime"></el-table-column>
       <el-table-column label="Date" prop="date"></el-table-column>
-      <el-table-column label="Inviter"></el-table-column>
+      <el-table-column label="Inviter">
+        <template v-for="inviter in inviters">
+          {{inviter.name}}
+        </template>
+      </el-table-column>
       <el-table-column label="Note" prop="note"></el-table-column>
       <el-table-column width="300" label="Actions">
-        <el-button size="mini" type="success" icon="el-icon-check">Active</el-button>
-        <el-button size="mini" icon="el-icon-remove">Inctive</el-button>
-        <el-button size="mini" type="primary" icon="el-icon-edit">Edit</el-button>
-        <el-button size="mini" type="danger" icon="el-icon-delete">Delete</el-button>
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            v-if="scope.row.status === 1"
+            type="success"
+            icon="el-icon-check"
+          >Active</el-button>
+          <el-button size="mini" v-if="scope.row.status === 0" icon="el-icon-remove">Inctive</el-button>
+          <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit">Edit</el-button>
+          <el-button size="mini" type="danger" icon="el-icon-circle-close">Cancel</el-button>
+        </template>
       </el-table-column>
     </el-table>
     <div style="margin-top:50px" class="page">
@@ -37,7 +48,7 @@ export default {
   data() {
     return {
       arrBooking: [],
-      arrStatusOfBooking: []
+      inviters: []
     };
   },
   created() {
@@ -48,15 +59,7 @@ export default {
       return getAllBookingRoom()
         .then(result => {
           this.arrBooking = [...result.data.booking];
-          for (let i = 0; i < this.arrBooking.length; i++) {
-            let status = {
-              id: this.arrBooking[i]._id,
-              status: this.arrBooking[i].status
-            };
-            this.arrStatusOfBooking.push(status);
-          }
-          console.log("Arr", this.arrStatusOfBooking);
-          // console.log(result.data.booking)
+          this.inviters = this.arrBooking[0].inviters
           console.log(this.arrBooking);
         })
         .catch(err => {
@@ -114,9 +117,5 @@ export default {
 }
 .el-select {
   width: 193px !important;
-}
-.cell {
-  display: flex;
-  justify-content: center;
 }
 </style>

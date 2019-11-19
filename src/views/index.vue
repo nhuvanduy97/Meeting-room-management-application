@@ -121,62 +121,6 @@
         <router-view></router-view>
       </div>
     </v-content>
-
-    <v-btn bottom color="pink" dark fab fixed right @click="dialog = !dialog">
-      <v-icon>mdi-plus</v-icon>
-    </v-btn>
-    <v-dialog v-model="dialog" persistent width="800px">
-      <v-card>
-        <v-card-title class="grey darken-2">Book Room</v-card-title>
-        <v-container>
-          <v-row>
-            <v-col class="align-center justify-space-between" cols="12">
-              <v-row align="center">
-                <v-text-field prepend-icon="title" placeholder="Title"></v-text-field>
-              </v-row>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field prepend-icon="access_time" placeholder="Start"></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field placeholder="End"></v-text-field>
-            </v-col>
-            <v-col cols="12">
-              <v-dialog
-                ref="dialog"
-                v-model="modal"
-                :return-value.sync="date"
-                persistent
-                width="290px"
-              >
-                <template v-slot:activator="{ on }">
-                  <v-text-field v-model="date" label="Date" prepend-icon="event" readonly v-on="on"></v-text-field>
-                </template>
-                <v-date-picker v-model="date" scrollable>
-                  <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-                  <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
-                </v-date-picker>
-              </v-dialog>
-            </v-col>
-            <v-col cols="12">
-              <v-text-field prepend-icon="description" placeholder="Description"></v-text-field>
-            </v-col>
-            <v-col cols="12">
-              <v-select prepend-icon="room" :items="rooms" label="Room" solo></v-select>
-            </v-col>
-            <v-col cols="12">
-              <v-text-field prepend-icon="notes" placeholder="Notes"></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text @click="dialog = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="triggerClickSave()">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-app>
 </template>
 
@@ -216,10 +160,7 @@ export default {
     item: 1,
     user: {},
     date: new Date().toISOString().substr(0, 10),
-    modal: false,
-    dialog: false,
     drawer: null,
-    rooms: ["Foo", "Bar", "Fizz", "Buzz"],
     items: [
       {
         icon: "calendar_today",
@@ -265,9 +206,6 @@ export default {
     setting: [{ icon: "settings_applications", text: "Setting", href: "/home" }]
   }),
   methods: {
-    triggerClickSave() {
-      this.dialog = false;
-    },
     LogOut() {
       this.$cookies.remove("user");
       this.$router.push({ path: "/login" });

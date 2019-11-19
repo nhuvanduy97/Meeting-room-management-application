@@ -68,6 +68,7 @@
 <script>
 // import axios from "axios";
 import { getAllRoom, addRoom } from "@/api/room-api.js";
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -84,11 +85,10 @@ export default {
       // token: ""
     };
   },
-  created() {
-    // this.token = this.$cookies.get("token");
-    this.getInfoRoom();
+  computed: {
+    ...mapGetters(["getUserInfos"])
   },
-  updated() {
+  created() {
     this.getInfoRoom();
   },
   methods: {
@@ -99,20 +99,36 @@ export default {
     },
     handleEdit(index, row) {
       this.dialogFormVisible = true;
-      console.log(index, row)
+      console.log(index, row);
     },
-    handleDelete() {
-    },
+    handleDelete() {},
     toggleClick() {
       let data = {
         name: this.room.name,
         seatnumber: this.room.seatNumber,
         position: this.room.position,
-        des: this.room.description
+        des: this.room.description,
+        manager: this.getUserInfos._id
       };
       addRoom(data).then(res => {
-        console.log(res);
+        if (res.data.success) {
+          this.$notify({
+            title: "Success",
+            message: "Add room success",
+            type: "success"
+          });
+        } else {
+          this.$notify.error({
+            title: "Error",
+            message: "Add room erro!"
+          });
+          this.room.name = "",
+          this.room.seatNumber = "",
+          this.room.position = "",
+          this.room.description = ""
+        }
       });
+      this.getInfoRoom();
       this.dialogFormVisible = false;
     }
   }

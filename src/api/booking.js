@@ -6,3 +6,10 @@ export function getAllBookingRoom() {
         method: 'get'
     })
 }
+export function reserveRoom(data) {
+    return request({
+        url: '/api/reserve-room',
+        method: 'post',
+        data
+    })
+}
