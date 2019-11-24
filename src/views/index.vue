@@ -99,16 +99,20 @@
 
       <el-popover
         placement="bottom"
-        title="Notifications"
-        width="200"
         trigger="click"
-        content="this is content, this is content, this is content"
+        popper-class="customize-popper-noti"
       >
-        <v-btn slot="reference" large icon>
+        <div v-for="(noti, i) in notifications" :key="i">
+          <div class="notification" >
+            <div class="message"> 
+              <span v-html="noti.message"></span>
+            </div>
+          </div>
+        </div>
+        <v-btn style="margin-right:10px" :class="[unReadNoti !==0 ? 'badge' : '']" :data-badge="unReadNoti" slot="reference" large icon>
           <v-icon>notifications</v-icon>
         </v-btn>
       </el-popover>
-
       <v-btn disabled icon large>
         <v-avatar size="32px" item>
           <v-img src="@/assets/d.png"></v-img>
@@ -126,6 +130,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { getNotificationByIdUser } from "@/api/notifications.js"
 export default {
   props: {
     source: String
@@ -155,11 +160,15 @@ export default {
         this.items[i].isPermission = false;
       }
     }
+
+    this.getNotification();
   },
   data: () => ({
     item: 1,
     user: {},
     date: new Date().toISOString().substr(0, 10),
+    notifications: [],
+    unReadNoti: 0,
     drawer: null,
     items: [
       {
@@ -209,11 +218,63 @@ export default {
     LogOut() {
       this.$cookies.remove("user");
       this.$router.push({ path: "/login" });
+    },
+    getNotification(){
+      return getNotificationByIdUser(this.user._id).then((res) => {
+        this.notifications = [...res.data.notification]
+        for (let i=0;i<this.notifications.length;i++){
+          if (this.notifications[i].status === 0){
+            this.unReadNoti ++;
+          }
+        }
+        console.log(this.notifications)
+      }).catch((err) => {
+        throw err;
+      });
     }
   }
 };
 </script>
 <style lang="scss">
+.customize-popper-noti {
+  padding: 0 !important;
+  border: none !important;
+  width: 300px !important;
+  background-color: #dde9ee !important;
+  overflow-x: auto;
+  box-shadow: none !important;
+  height: 200px !important;
+  .message {
+    margin-left: 5px;
+    margin-right: 5px;
+    background: #dde9ee;
+    cursor: pointer;
+    border-bottom: 0.5px gray solid;
+  }
+  .message:hover {
+    cursor: pointer;
+    background-color: #48bcbc;
+  }
+
+}
+.badge {
+   position:relative;
+}
+.badge[data-badge]:after {
+    content: attr(data-badge);
+    position: absolute;
+    top: -3px;
+    right: 3px;
+    font-size: 0.7em;
+    background: red;
+    color: white;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 24px;
+    border-radius: 50%;
+   box-shadow:0 0 1px #333;
+}
 .content {
   padding-left: 10px;
 }

@@ -54,7 +54,7 @@ export default {
           if (res.data) {
             this.$store.dispatch("storingUser", res.data.user);
             let d = new Date();
-            d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000);
+            d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 10000);
             let expires = "expires=" + d.toUTCString();
             this.$cookies.set("token", res.data.token, expires);
             // this.$cookies.set("user", res.data.user, expires);

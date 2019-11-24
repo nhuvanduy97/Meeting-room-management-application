@@ -1,5 +1,5 @@
 <template>
-  <div class="my-component fadeInRight animated">
+  <div class="my-component fadeInRight animated"  v-loading="loading">
     <div style="margin-left:20px;margin-top:20px" class="container">
       <h4>Your Metting</h4>
       <span>Please invite additional people after being accepted for the meeting room reservation</span>
@@ -43,28 +43,30 @@
 </template>
 
 <script>
-import { getAllBookingRoom } from "@/api/booking";
+import { getBookingOfUser } from "@/api/booking";
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
       arrBooking: [],
-      inviters: []
+      inviters: [],
+      loading: true
     };
   },
   created() {
-    this.getAllBookingRoom();
+    this.getBookingOfUser();
+  },
+  computed: {
+     ...mapGetters(["getUserInfos"])
   },
   methods: {
-    getAllBookingRoom() {
-      return getAllBookingRoom()
-        .then(result => {
-          this.arrBooking = [...result.data.booking];
-          this.inviters = this.arrBooking[0].inviters
-          console.log(this.arrBooking);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    getBookingOfUser() {
+      return getBookingOfUser(this.getUserInfos._id).then(res => {
+        if (res.data){
+          this.arrBooking = [...res.data.booking]
+          this.loading = false;
+        }
+      })
     },
 
     handleEdit(index, row) {
@@ -72,14 +74,6 @@ export default {
     },
     handleDelete(index, row) {
       console.log(index, row);
-    },
-    querySearch(queryString, cb) {
-      var links = this.links;
-      var results = queryString
-        ? links.filter(this.createFilter(queryString))
-        : links;
-      // call callback function to return suggestions
-      cb(results);
     },
     createFilter(queryString) {
       return link => {

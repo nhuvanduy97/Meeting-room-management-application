@@ -14,3 +14,21 @@ export function addRoom(data) {
         data
     })
 }
+
+export function updateRoom(data) {
+    return request({
+        url: '/api/update-room',
+        method: 'put',
+        data
+    })
+}
+
+export function deleteRoom(idRoom) {
+    return request({
+        url: '/api/delete-room',
+        method: 'delete',
+        params: {
+            _id: idRoom
+        }
+    })
+}
