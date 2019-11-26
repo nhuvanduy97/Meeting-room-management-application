@@ -1,5 +1,5 @@
 <template>
-  <div class="my-login">
+  <div class="my-login" v-loading="loading">
     <div class="login-form">
       <div class="title-login">
         <h1 class="sign-in">Sign in</h1>
@@ -33,11 +33,13 @@ export default {
   data() {
     return {
       username: "",
-      password: ""
+      password: "",
+      loading: false
     };
   },
   methods: {
     login() {
+      this.loading = true;
       axios({
         method: "post",
         url: "http://localhost:3000/api/login",
@@ -52,6 +54,7 @@ export default {
             (this.username = ""), (this.password = "");
           }
           if (res.data) {
+            this.loading = false;
             this.$store.dispatch("storingUser", res.data.user);
             let d = new Date();
             d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 10000);

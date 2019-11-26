@@ -9,3 +9,11 @@ export function getNotificationByIdUser(idUser) {
         }    
     })
 }
+
+export function makupNotification(data) {
+    return request({
+        url: '/api/makup-noti',
+        method: 'put',
+        data
+    })
+}

@@ -103,8 +103,8 @@
         popper-class="customize-popper-noti"
       >
         <div v-for="(noti, i) in notifications" :key="i">
-          <div class="notification" >
-            <div class="message"> 
+          <div @click="readNoti(noti)">
+            <div :class="[noti.status === 1 ? 'read-noti' : 'message']" class=""> 
               <span v-html="noti.message"></span>
             </div>
           </div>
@@ -130,7 +130,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { getNotificationByIdUser } from "@/api/notifications.js"
+import { getNotificationByIdUser, makupNotification } from "@/api/notifications.js"
 export default {
   props: {
     source: String
@@ -164,7 +164,7 @@ export default {
     this.getNotification();
   },
   data: () => ({
-    item: 1,
+    item: 0,
     user: {},
     date: new Date().toISOString().substr(0, 10),
     notifications: [],
@@ -227,10 +227,21 @@ export default {
             this.unReadNoti ++;
           }
         }
-        console.log(this.notifications)
       }).catch((err) => {
         throw err;
       });
+    },
+    readNoti(noti){
+      if (noti.status === 1) return;
+      let data = {
+        _id: noti._id
+      }
+      makupNotification(data).then(res => {
+       if (res){
+         this.unReadNoti -=1;
+       }
+      })
+      this.getNotification();
     }
   }
 };
@@ -245,17 +256,21 @@ export default {
   box-shadow: none !important;
   height: 200px !important;
   .message {
-    margin-left: 5px;
-    margin-right: 5px;
+    // margin-left: 5px;
+    // margin-right: 5px;
     background: #dde9ee;
     cursor: pointer;
-    border-bottom: 0.5px gray solid;
+    border-bottom: 1px white solid;
   }
   .message:hover {
     cursor: pointer;
     background-color: #48bcbc;
+     border-bottom: 1px white solid;
   }
 
+}
+.read-noti {
+  background-color: #48bcbc;
 }
 .badge {
    position:relative;
