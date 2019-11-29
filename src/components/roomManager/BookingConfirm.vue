@@ -16,7 +16,7 @@
       <el-table-column label="Note" prop="note"></el-table-column>
       <el-table-column width="200" label="Actions">
         <template slot-scope="scope">
-          <el-button size="mini" icon="el-icon-remove" @click="handleAccept(scope.row)">Accept</el-button>
+          <el-button size="mini" icon="el-icon-remove" @click="handleAccept(scope.$index,scope.row)">Accept</el-button>
           <el-button size="mini" type="warning" icon="el-icon-circle-close" @click="handleRequest(scope.row)">Request</el-button>
         </template>
       </el-table-column>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { getAllBookingRoom } from "@/api/booking";
+import { getAllBookingRoom} from "@/api/booking";
 import { mapGetters } from 'vuex';
 export default {
   data() {
@@ -57,6 +57,21 @@ export default {
           this.loading = false;
         }
       })
+    },
+    handleAccept(index,row){
+      console.log(index, row)
+      // console.log(index)
+      // console.log(row.room.name)
+      // console.log(this.arrBooking)
+      // findBooking(row.date, row.room._id).then(res => {
+      //   if(res.data.result.length > 1){
+      //     alert("Đã có phòng trùng" + res.data.result.length)
+      //   }
+      //   else {
+      //     alert("2")
+      //   }
+      //   console.log("res", res.data)
+      // })
     }
   },
 };

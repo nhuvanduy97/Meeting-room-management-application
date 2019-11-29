@@ -241,7 +241,7 @@ export default {
          this.unReadNoti -=1;
        }
       })
-      this.getNotification();
+      // this.getNotification();
     }
   }
 };

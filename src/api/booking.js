@@ -24,3 +24,15 @@ export function reserveRoom(data) {
         data
     })
 }
+
+export function findBooking(idRoom, date) {
+    return request({
+        url: '/api/find-booking',
+        method: 'get',
+        params: {
+            room: idRoom,
+            date: date
+        }
+    })
+    
+}

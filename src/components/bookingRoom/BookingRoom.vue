@@ -13,7 +13,7 @@
               <el-input v-model="booking.title"></el-input>
             </el-form-item>
             <el-form-item label="Room" prop="room">
-              <el-select v-model="booking.room" placeholder="Please select room">
+              <el-select @change="onChangeRoom(booking.room)" v-model="booking.room" placeholder="Please select room">
                 <div v-for="(room, index) in rooms" :key="index">
                   <el-option :label="room.name" :value="room._id"></el-option>
                 </div>
@@ -22,6 +22,8 @@
             <el-form-item label="Date" prop="date">
               <div class="block">
                 <el-date-picker
+                :picker-options="datePickerOptions"
+                @change="changeDate(booking.date)"
                   v-model="booking.date"
                   type="date"
                   :default-value="booking.date"
@@ -34,6 +36,7 @@
               <el-time-select
                 placeholder="Start time"
                 v-model="booking.startTime"
+                @change="onChangeStartTime(booking.startTime)"
                 :picker-options="{
                 start: '08:30',
                 step: '00:30',
@@ -81,15 +84,15 @@
           </el-form>
         </el-col>
         <el-col style="margin-left:40px" :span="4">
-          <div style="height: 300px;">
-            <el-steps direction="vertical" :active="3">
+          <!-- <div style="height: 300px;">
+            <el-steps direction="vertical" :active="1">
               <el-step title="Step 1"></el-step>
               <el-step title="Step 2"></el-step>
               <el-step title="Step 3"></el-step>
               <el-step title="Step 4"></el-step>
               <el-step title="Done"></el-step>
             </el-steps>
-          </div>
+          </div> -->
         </el-col>
       </el-row>
     </div>
@@ -99,7 +102,7 @@
 <script>
 import { getAllRoom } from "@/api/room-api.js";
 import { getUserByTeamId } from "@/api/user.js";
-import { reserveRoom } from "@/api/booking.js";
+import { reserveRoom, findBooking } from "@/api/booking.js";
 import moment from "moment";
 import { mapGetters } from "vuex";
 export default {
@@ -135,7 +138,15 @@ export default {
         ]
       },
       membersOfTeam: [],
-      rooms: []
+      rooms: [],
+      datePickerOptions: {
+        disabledDate (date) {
+          return  moment(date).isBefore(new Date())
+        }
+      },
+      roomSelected: "",
+      checkBooking: [],
+      step: 0
     };
   },
   created() {
@@ -146,6 +157,24 @@ export default {
     ...mapGetters(["getUserInfos"])
   },
   methods: {
+    onChangeRoom(roomId){
+      this.roomSelected = roomId
+    },
+    changeDate(date){
+      this.checkBooking = []
+      let data = moment(date).format("YYYY-MM-DD")
+      findBooking(this.roomSelected, data).then(res => {
+        this.checkBooking = [...res.data.result]
+      })
+    },
+    onChangeStartTime(startTime){
+      for(let i=0;i<this.checkBooking.length;i++){
+        if(startTime < this.checkBooking[i].endTime || startTime <= this.checkBooking[i].startTime){
+          this.booking.startTime = ""
+          this.$message.error('Erro!, This time has been dupplicated!');
+        }
+      }
+    },
     getUserByTeamId() {
       getUserByTeamId(this.getUserInfos.teamId._id).then(res => {
         for (let i = 0; i < res.data.members.length; i++) {
@@ -162,7 +191,6 @@ export default {
     getInfoRoom() {
       return getAllRoom().then(res => {
         this.rooms = [...res.data.rooms];
-        console.log("room", this.rooms)
       });
     },
     handleClickCreate(ruleForm) {
@@ -175,9 +203,9 @@ export default {
             startTime: this.booking.startTime,
             endTime: this.booking.endTime,
             note: this.booking.note,
-            inviters: this.booking.inviter
+            inviters: this.booking.inviter,
+            members: []
           };
-          console.log("data", data)
           reserveRoom(data).then(res => {
             if (res.data.success) {
               this.$notify({

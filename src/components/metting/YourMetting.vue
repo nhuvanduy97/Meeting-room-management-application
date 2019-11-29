@@ -53,7 +53,7 @@
       </el-collapse>
 
       <el-collapse v-model="activeNames">
-         <el-collapse-item  title="Invited Members" name="1">
+         <el-collapse-item title="Invited Members" name="1">
             <el-row>
               <el-col :span="8">
                 <el-select v-model="value" filterable placeholder="Select">
@@ -148,6 +148,7 @@ export default {
       this.dialogEdit = true;
       this.note = row.note
       this.title = row.title
+      console.log(row)
       console.log(row)
     }
   },
