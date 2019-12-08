@@ -1,12 +1,16 @@
 <template>
     <div>
-        Message...
+        <el-button @click="click">Click</el-button>
     </div>
 </template>
 
 <script>
     export default {
-        
+        methods: {
+            click(){
+                alert("ok")
+            }
+        }
     }
 </script>
 

@@ -84,15 +84,6 @@
           </el-form>
         </el-col>
         <el-col style="margin-left:40px" :span="4">
-          <!-- <div style="height: 300px;">
-            <el-steps direction="vertical" :active="1">
-              <el-step title="Step 1"></el-step>
-              <el-step title="Step 2"></el-step>
-              <el-step title="Step 3"></el-step>
-              <el-step title="Step 4"></el-step>
-              <el-step title="Done"></el-step>
-            </el-steps>
-          </div> -->
         </el-col>
       </el-row>
     </div>
@@ -213,6 +204,13 @@ export default {
                 message: "Room reservation successful!",
                 type: "success"
               });
+              this.booking.startTime = "";
+              this.booking.date = new Date();
+              this.booking.endTime = "";
+              this.booking.title = "";
+              this.booking.note = "";
+              this.booking.inviter = [];
+              this.booking.time = ""
             }
             else {
               this.$notify.error({

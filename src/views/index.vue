@@ -102,12 +102,17 @@
         trigger="click"
         popper-class="customize-popper-noti"
       >
-        <div v-for="(noti, i) in notifications" :key="i">
-          <div @click="readNoti(noti)">
-            <div :class="[noti.status === 1 ? 'read-noti' : 'message']" class=""> 
-              <span v-html="noti.message"></span>
+        <div v-if="notifications.length !== 0">
+          <div v-for="(noti, i) in notifications" :key="i">
+            <div @click="readNoti(noti)">
+              <div :class="[noti.status === 1 ? 'read-noti' : 'message']" class=""> 
+                <span v-html="noti.message"></span>
+              </div>
             </div>
           </div>
+        </div>
+        <div v-else class="not-notification">
+          <label>Không có thông báo nào!</label>
         </div>
         <v-btn style="margin-right:10px" :class="[unReadNoti !==0 ? 'badge' : '']" :data-badge="unReadNoti" slot="reference" large icon>
           <v-icon>notifications</v-icon>
@@ -268,6 +273,11 @@ export default {
      border-bottom: 1px white solid;
   }
 
+}
+.not-notification {
+  display: flex;
+  justify-content: center;
+  line-height: 13;
 }
 .read-noti {
   background-color: #48bcbc;

@@ -32,3 +32,12 @@ export function deleteRoom(idRoom) {
         }
     })
 }
+export function getRoomById(idRoom) {
+    return request({
+        url: '/api/get-room-byid',
+        method: 'get',
+        params: {
+            _id: idRoom
+        }
+    })
+}

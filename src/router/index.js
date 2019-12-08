@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 // import Content from "../views/Content.vue";
-import Calendar from "../components/calendar/Calendar.vue"
+import Calendar1 from "../components/calendar/Calendar1.vue"
 import Container from "../views/index.vue"
 import Login from "../components/Login.vue"
 import Message from "../components/message/Message.vue"
@@ -26,7 +26,7 @@ const routes = [
       {
         path: "/calendar",
         name: "calendar",
-        component: Calendar
+        component: Calendar1
       },
       {
         path: "/message",

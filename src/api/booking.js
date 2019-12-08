@@ -36,3 +36,10 @@ export function findBooking(idRoom, date) {
     })
     
 }
+export function confirmBooking(data) {
+    return request({
+        url: '/api/update-booking',
+        method: 'put',
+        data
+    })
+}

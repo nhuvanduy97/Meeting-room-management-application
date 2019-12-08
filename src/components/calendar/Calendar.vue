@@ -68,6 +68,7 @@
 </template>
 
 <script>
+import { getAllBookingRoom } from "@/api/booking"
 export default {
   data: () => ({
     date: new Date().toISOString().substr(0, 10),
@@ -92,6 +93,18 @@ export default {
       }
     ]
   }),
+  created(){
+    this.getAllBookingRoom();
+  },
+  methods: {
+    getAllBookingRoom(){
+      return getAllBookingRoom().then(res => {
+        console.log("aa", res.data.booking)
+      }).catch(err => {
+        Promise.reject(err)
+      })
+    }
+  },
   mounted() {
     this.$refs.calendar.scrollToTime("08:00");
   }
