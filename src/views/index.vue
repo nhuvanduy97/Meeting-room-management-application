@@ -172,7 +172,7 @@ export default {
     this.getNotification();
   },
   data: () => ({
-    item: 0,
+    item: 1,
     user: {},
     date: new Date().toISOString().substr(0, 10),
     notifications: [],
@@ -223,7 +223,6 @@ export default {
       }
     ],
     commons: [
-      { icon: "home", text: "Home", href: "/home" },
       { icon: "message", text: "Message", href: "/message" },
       { icon: "account_box", text: "Metting", href: "/invite-metting" }
     ],
