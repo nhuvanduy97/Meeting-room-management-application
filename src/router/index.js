@@ -1,20 +1,17 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import Content from "../views/Content.vue";
 import Calendar1 from "../components/calendar/Calendar1.vue"
 import Container from "../views/index.vue"
 import Login from "../components/Login.vue"
 import Message from "../components/message/Message.vue"
 import Home from "../components/Home.vue"
-// import RoomManager from "../components/roomManager/RoomManager.vue"
-// import BookingConfirm from "../components/roomManager/BookingConfirm.vue"
 import RoomManager from "../components/roomManager/"
 import Report from "../components/director/Report.vue"
 import YourMetting from "../components/metting/YourMetting"
+import PermissonMetting from "../components/metting/PermissonMetting"
 import InviteMetting from "../components/metting/InviteMetting"
 import BookingRoom from "../components/bookingRoom/BookingRoom"
 
-// import Cookies from "vue-cookies"
 
 Vue.use(VueRouter);
 
@@ -43,11 +40,11 @@ const routes = [
         name: "room-manager",
         component: RoomManager
       },
-      // {
-      //   path: "/booking-confirm",
-      //   name: "booking-confirm",
-      //   component: BookingConfirm
-      // },
+      {
+        path: "/permisson-booking",
+        name: "permisson",
+        component: PermissonMetting
+      },
       {
         path: "/report",
         name: "report",

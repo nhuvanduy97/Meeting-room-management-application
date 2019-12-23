@@ -144,8 +144,6 @@ export default {
     ...mapGetters(["getUserInfos"])
   },
   created() {
-    // console.log("user", this.getUserInfos)
-
     this.user = this.getUserInfos;
     for (let i = 0; i < this.items.length; i++) {
       if (this.user.roleId.name === "admin") {
@@ -163,6 +161,11 @@ export default {
       }
       if (this.user.roleId.name === "member") {
         this.items[i].isPermission = false;
+      }
+      if (this.user.isInviter === 1){
+        if (this.items[i].permission === "member"){
+          this.items[i].isPermission = true
+        }
       }
     }
 
@@ -210,12 +213,19 @@ export default {
         href: "/booking-room",
         permission: "leader",
         isPermission: false
+      },
+      {
+        icon: "perm_identity",
+        text: "Invite Member",
+        href: "/permisson-booking",
+        permission: "member",
+        isPermission: false
       }
     ],
     commons: [
       { icon: "home", text: "Home", href: "/home" },
       { icon: "message", text: "Message", href: "/message" },
-      { icon: "account_box", text: "Invite Metting", href: "/invite-metting" }
+      { icon: "account_box", text: "Metting", href: "/invite-metting" }
     ],
     setting: [{ icon: "settings_applications", text: "Setting", href: "/home" }]
   }),

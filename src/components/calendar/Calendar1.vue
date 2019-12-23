@@ -109,8 +109,8 @@ import { moment } from "moment"
     data: () => ({
       booking: [],
       mycolor: '#000000',
-      today: "2019-12-08",
-      focus: '2019-12-08',
+      today: new Date(),
+      focus: new Date(),
       type: 'month',
       typeToLabel: {
         month: 'Month',
@@ -123,22 +123,7 @@ import { moment } from "moment"
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-      events: [
-        // {
-        //   name: 'Vacation',
-        //   details: 'Going to the beach!',
-        //   start: '2019-01-01 9:00',
-        //   end: '2019-01-01 10:00',
-        //   color: 'blue',
-        // },
-        // {
-        //   name: 'Meeting',
-        //   details: 'Spending time on how we do not have enough time <br/> aa <br/> bb',
-        //   start: '2019-01-07 09:00',
-        //   end: '2019-01-07 09:30',
-        //   color: 'indigo',
-        // }
-      ],
+      events: [],
     }),
     computed: {
       title () {
@@ -203,7 +188,6 @@ import { moment } from "moment"
                     }
                     this.events.push(event)
             }
-            // console.log("xxx", this.x)
           }
         },
         viewDay ({ date }) {

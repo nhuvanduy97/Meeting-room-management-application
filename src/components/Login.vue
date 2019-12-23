@@ -62,7 +62,7 @@ export default {
             this.$cookies.set("token", res.data.token, expires);
             // this.$cookies.set("user", res.data.user, expires);
 
-            this.$router.push({ path: "/" });
+            this.$router.push({ path: "/home" });
           }
         })
         .catch(function(err) {
