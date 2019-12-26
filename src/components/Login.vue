@@ -50,8 +50,8 @@ export default {
       })
         .then(res => {
           if (!res.data.success) {
-            alert("wrong!");
             (this.username = ""), (this.password = "");
+            alert("wrong!");
           }
           if (res.data) {
             this.loading = false;

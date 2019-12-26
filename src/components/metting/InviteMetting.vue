@@ -4,35 +4,40 @@
       <h1>My Metting</h1>
       <el-divider></el-divider>
     </div>
-    <div v-for="(metting,i) in mettings" :key="i">
-      <el-row :gutter="12">
-        <el-col :span="8">
-          <el-card shadow="hover">
-            <div style="margin-top:20px;">
-              <div class="title-metting">
-                <i class="icon el-icon-s-cooperation"></i>
-                <span>{{metting.title}}</span>
+    <div v-if="mettings.length !==0">
+      <div v-for="(metting,i) in mettings" :key="i">
+        <el-row :gutter="12">
+          <el-col :span="8">
+            <el-card shadow="hover">
+              <div style="margin-top:20px;">
+                <div class="title-metting">
+                  <i class="icon el-icon-s-cooperation"></i>
+                  <span>{{metting.title}}</span>
+                </div>
+                <div class="time-metting">
+                  <i class="icon el-icon-time"></i>
+                  <span>{{metting.startTime}} - {{metting.endTime}}</span>
+                  <span style="margin-left:5px; float:right">{{numberOfMetting}} person</span>
+                </div>
+                <el-divider></el-divider>
+                <div class="date-metting">
+                  <i class="icon el-icon-date"></i>
+                  <span>{{metting.date}}</span>
+                  <el-dropdown style="float:right" size="medium" split-button type="primary">
+                    Options
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item>Refuse</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </div>
               </div>
-              <div class="time-metting">
-                <i class="icon el-icon-time"></i>
-                <span>{{metting.startTime}} - {{metting.endTime}}</span>
-                <span style="margin-left:5px; float:right">{{numberOfMetting}} person</span>
-              </div>
-              <el-divider></el-divider>
-              <div class="date-metting">
-                <i class="icon el-icon-date"></i>
-                <span>{{metting.date}}</span>
-                <el-dropdown style="float:right" size="medium" split-button type="primary">
-                  Options
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>Refuse</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-    </el-row>
+            </el-card>
+          </el-col>
+      </el-row>
+      </div>
+    </div>
+    <div class="no-metting" v-else>
+      <label>Không có cuộc họp nào!</label>
     </div>
     
   </div>
@@ -101,6 +106,12 @@ export default {
   }
   .el-divider--horizontal {
     margin: 25px 0;
+  }
+  .no-metting {
+    display: flex;
+    justify-content: center;
+    font-size: 25px;
+    font-weight: 500;
   }
 }
 </style>

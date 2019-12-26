@@ -19,7 +19,7 @@
             </div>
           </div>
           <v-avatar slot="reference">
-            <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+             <v-img src="@/assets/user.png"></v-img>
           </v-avatar>
         </el-popover>
         <div class="user">
